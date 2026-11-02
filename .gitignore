@@ -1,0 +1,6 @@
+.private/
+.superpowers/
+AUDIT-*.md
+docs/2026-11-02-ai-pm-os-design.md
+__pycache__/
+.DS_Store

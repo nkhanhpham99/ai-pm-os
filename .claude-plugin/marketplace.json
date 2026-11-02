@@ -1,0 +1,8 @@
+{
+  "name": "ai-pm-os",
+  "owner": {
+    "name": "Khanh Pham"
+  },
+  "description": "A product manager's AI workflow, packaged as installable Claude Code plugins.",
+  "plugins": []
+}
