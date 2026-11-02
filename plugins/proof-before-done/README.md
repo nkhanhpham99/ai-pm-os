@@ -22,11 +22,11 @@ The hooks fail open. Any parse problem, missing transcript, empty or non-JSON in
 ## Install
 
 ```
-/plugin marketplace add <owner>/ai-pm-os
+/plugin marketplace add nkhanhpham99/ai-pm-os
 /plugin install proof-before-done@ai-pm-os
 ```
 
-From a local clone, use the clone's path in place of `<owner>/ai-pm-os`. Check it loaded with `/hooks`.
+From a local clone, use the clone's path in place of `nkhanhpham99/ai-pm-os`. Check it loaded with `/hooks`.
 
 ## Extend the tool list
 

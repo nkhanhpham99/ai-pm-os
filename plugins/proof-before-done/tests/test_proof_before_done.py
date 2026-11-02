@@ -2,8 +2,10 @@
 
 Run: python3 -m unittest discover -s plugins/proof-before-done/tests -v
 """
+import importlib.util
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -109,6 +111,26 @@ class PostHook(unittest.TestCase):
 
     def test_silent_for_reads(self):
         self.assertIsNone(run("post", {"tool_name": NOTION_READ}))
+
+
+class HooksJson(unittest.TestCase):
+    """Pins the README claim that the hooks.json matcher and the WRITE pattern must agree."""
+
+    def test_matcher_covers_every_write_alternative(self):
+        base = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(base, "..", "hooks", "hooks.json")) as f:
+            matcher = json.load(f)["hooks"]["PostToolUse"][0]["matcher"]
+        spec = importlib.util.spec_from_file_location("pbd_under_test", HOOK)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        m = re.fullmatch(r"__\((.*)\)\$", mod.WRITE.pattern)
+        self.assertIsNotNone(m, mod.WRITE.pattern)
+        names = m.group(1).split("|")
+        self.assertGreater(len(names), 10)
+        for name in names:
+            tool = "mcp__x__" + name
+            self.assertTrue(mod.WRITE.search(tool), tool)
+            self.assertTrue(re.fullmatch(matcher, tool), f"matcher does not cover {tool}")
 
 
 if __name__ == "__main__":
