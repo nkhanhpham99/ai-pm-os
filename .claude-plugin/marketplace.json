@@ -4,5 +4,21 @@
     "name": "Khanh Pham"
   },
   "description": "A product manager's AI workflow, packaged as installable Claude Code plugins.",
-  "plugins": []
+  "plugins": [
+    {
+      "name": "proof-before-done",
+      "source": "./plugins/proof-before-done",
+      "description": "Hooks that block 'done' claims until an external write has been read back, plus a backtest and a self-correct skill.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Khanh Pham"
+      },
+      "license": "MIT",
+      "keywords": [
+        "verification",
+        "hooks",
+        "self-correct"
+      ]
+    }
+  ]
 }

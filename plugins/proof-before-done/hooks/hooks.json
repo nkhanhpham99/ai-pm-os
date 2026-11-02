@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "mcp__.*(notion|slack|send_message|draft|reply|forward|update_doc|create_file|update_file|values|spreadsheet).*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"${CLAUDE_PLUGIN_ROOT}/hooks/proof_before_done.py\" post",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"${CLAUDE_PLUGIN_ROOT}/hooks/proof_before_done.py\" stop",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

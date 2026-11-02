@@ -1,0 +1,10 @@
+{
+  "name": "proof-before-done",
+  "version": "0.1.0",
+  "description": "Hooks that stop the agent from claiming an external write (chat, docs, email, sheets) landed until it has read it back, plus a backtest and a self-correct skill.",
+  "author": {
+    "name": "Khanh Pham"
+  },
+  "license": "MIT",
+  "keywords": ["verification", "hooks", "proof-before-done", "self-correct", "product-management"]
+}
