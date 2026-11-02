@@ -160,6 +160,36 @@ test_default_root_is_cwd() {
   assert_rc test_default_root_is_cwd 1
 }
 
+test_invalid_deny_regex_exits_2() {
+  local r; r="$(new_repo)"
+  local deny="$r.deny"; TMPS+=("$deny")
+  echo "(secret-thing" > "$deny"
+  echo "secret-thing" > "$r/plan.md"
+  run_lint --deny-file "$deny" "$r"
+  assert_rc test_invalid_deny_regex_exits_2 2
+  assert_out_has test_invalid_deny_regex_names_line "deny#1: invalid regex"
+}
+
+test_invalid_deny_regex_in_clean_repo_not_clean() {
+  local r; r="$(new_repo)"
+  local deny="$r.deny"; TMPS+=("$deny")
+  printf 'fine-term\n[unclosed\n' > "$deny"
+  echo "nothing to see" > "$r/plan.md"
+  run_lint --deny-file "$deny" "$r"
+  assert_rc test_invalid_deny_regex_in_clean_repo_not_clean 2
+  assert_out_has test_invalid_deny_regex_second_line "deny#2: invalid regex"
+}
+
+test_unreadable_file_fails_closed() {
+  if [ "$(id -u)" -eq 0 ]; then ok "test_unreadable_file_fails_closed (skipped as root)"; return; fi
+  local r; r="$(new_repo)"
+  echo "hello" > "$r/locked.md"
+  chmod 000 "$r/locked.md"
+  run_lint "$r"
+  chmod 644 "$r/locked.md"
+  assert_rc test_unreadable_file_fails_closed 2
+}
+
 test_clean_repo_passes
 test_users_path_fails
 test_deny_file_term_fails
@@ -173,6 +203,9 @@ test_other_builtin_patterns_fail
 test_fixtures_dir_skipped
 test_binary_file_scanned
 test_default_root_is_cwd
+test_invalid_deny_regex_exits_2
+test_invalid_deny_regex_in_clean_repo_not_clean
+test_unreadable_file_fails_closed
 
 echo "---"
 echo "passed: $PASS, failed: $FAIL"

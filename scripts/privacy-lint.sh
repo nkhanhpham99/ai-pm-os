@@ -43,7 +43,8 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "privacy-lint: not
 # Files to scan: tracked + untracked-not-ignored, minus self and fixtures.
 FILES="$(mktemp)"
 HITS="$(mktemp)"
-trap 'rm -f "$FILES" "$HITS"' EXIT
+ERRS="$(mktemp)"
+trap 'rm -f "$FILES" "$HITS" "$ERRS"' EXIT
 git ls-files -co --exclude-standard -z \
   | tr '\0' '\n' \
   | grep -v -e '^scripts/privacy-lint\.sh$' -e '^tests/fixtures/' \
@@ -54,7 +55,7 @@ scan() {
   local name="$1" regex="$2"
   [ -s "$FILES" ] || return 0
   tr '\n' '\0' < "$FILES" \
-    | xargs -0 grep -a -n -H -i -o -E -e "$regex" 2>/dev/null \
+    | xargs -0 grep -a -n -H -i -o -E -e "$regex" 2>>"$ERRS" \
     | sed -E "s/^(.*):([0-9]+):.*$/\1:\2: $name/" >> "$HITS"
 }
 
@@ -69,7 +70,7 @@ scan 'jwt-token'        'eyJ[A-Za-z0-9_-]{10,}\.'
 # Email addresses, except @users.noreply.github.com and @example.com.
 if [ -s "$FILES" ]; then
   tr '\n' '\0' < "$FILES" \
-    | xargs -0 grep -a -n -H -i -o -E -e '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' 2>/dev/null \
+    | xargs -0 grep -a -n -H -i -o -E -e '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' 2>>"$ERRS" \
     | grep -v -i -E '@(users\.noreply\.github|example)\.com$' \
     | sed -E 's/^(.*):([0-9]+):.*$/\1:\2: email-address/' >> "$HITS"
 fi
@@ -78,8 +79,22 @@ fi
 grep -E -e '(^|/)AUDIT-' -e 'ai-pm-os-design' "$FILES" \
   | sed -E 's/^(.*)$/\1:0: private-filename/' >> "$HITS"
 
-# Deny-file patterns.
+# Deny-file patterns. Validate every pattern first: an invalid regex must stop
+# the lint (exit 2), never be silently skipped.
 if [ -n "$DENY_FILE" ]; then
+  n=0
+  invalid=0
+  while IFS= read -r pat || [ -n "$pat" ]; do
+    n=$((n + 1))
+    pat="${pat%$'\r'}"
+    case "$pat" in ''|'#'*) continue ;; esac
+    printf '' | grep -E -e "$pat" >/dev/null 2>&1
+    if [ $? -eq 2 ]; then
+      echo "deny#$n: invalid regex" >&2
+      invalid=1
+    fi
+  done < "$DENY_FILE"
+  [ "$invalid" -eq 0 ] || exit 2
   n=0
   while IFS= read -r pat || [ -n "$pat" ]; do
     n=$((n + 1))
@@ -87,6 +102,14 @@ if [ -n "$DENY_FILE" ]; then
     case "$pat" in ''|'#'*) continue ;; esac
     scan "deny#$n" "$pat"
   done < "$DENY_FILE"
+fi
+
+# Any grep error (unreadable file, engine failure) means the scan was incomplete:
+# fail closed rather than report clean.
+if [ -s "$ERRS" ]; then
+  echo "privacy-lint: scan errors (result not trustworthy):" >&2
+  sort -u "$ERRS" >&2
+  exit 2
 fi
 
 if [ -s "$HITS" ]; then
