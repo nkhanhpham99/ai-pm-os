@@ -36,3 +36,18 @@ Not yet re-measured: three runs, and the no-plugin baseline under the new grader
 
 - **Decision:** Keep the per-file graders and the tightened steps.
 - **Next:** Run the full eval (three runs with the plugin, three without) and record the score and the difference here.
+
+**Update 2026-11-03, full run:** with the per-file graders, three runs with the plugin and three without.
+
+| Arm | Score | Runs | Cost |
+|---|---|---|---|
+| With the plugin | 1.00 | 3 of 3 perfect | |
+| Without | 0.00 | 0 of 3 | |
+| Total | | 6 | $0.81 |
+
+Source: the eval report, 2026-11-03.
+
+What the difference is, and is not: without the plugin, the same model also changed all three values to 600. It scored 0 because it overwrote the old claim with no dated history note, or folded the history into the fact line, and its report had no checkable `copies:` line. So the measured gain is the audit trail and the verifiable report, not the fix itself. One fictional case with three files is a narrow test; a sweep across real notes, agents and memory is not measured here.
+
+- **Decision:** Keep. The eval passes at the 1.0 threshold and now runs in the repo as written.
+- **Next:** Add a second case where a copy hides in an unexpected place (a table cell, a quoted example, a sibling folder), so the eval tests the search, not only the edit.

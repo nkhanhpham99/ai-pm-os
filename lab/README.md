@@ -18,7 +18,7 @@ Rules for every entry:
 | 003 | [A fix that checks itself](003-a-fix-that-checks-itself.md) | Kept. |
 | 004 | [Guardrails that match on text misfire](004-guardrails-that-match-text-misfire.md) | Open. Fix not built. |
 | 005 | [Does logging every update keep my docs true?](005-a-fix-that-left-its-warning-behind.md) | Iterating. Two-week count pending. |
-| 006 | [Does self-correct pass its own eval?](006-does-self-correct-pass-its-own-eval.md) | Passing in one run (1.00) after a grader fix. Full run pending. |
+| 006 | [Does self-correct pass its own eval?](006-does-self-correct-pass-its-own-eval.md) | Kept. 1.00 with the plugin, 0.00 without. |
 
 ## Entry template
 
