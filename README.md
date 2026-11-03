@@ -2,6 +2,8 @@
 
 **A product manager's Claude Code workflow, packaged as plugins and measured in public.**
 
+> **Rules are cheap. Enforcement and measurement are the work.** A rule in a prompt is a request the agent can skip. So the effort here goes into hooks that check before "done", skills that leave a trail you can verify, and a [lab](lab/) that measures whether any of it changed behavior.
+
 [![CI](https://github.com/nkhanhpham99/ai-pm-os/actions/workflows/ci.yml/badge.svg)](https://github.com/nkhanhpham99/ai-pm-os/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-informational.svg)](CHANGELOG.md)
@@ -12,7 +14,7 @@ I use AI agents across my product work: research, specs, metrics reviews, shippi
 
 Writing better rules did not fix that. When I audited my own setup, the rules were strong and the enforcement was thin: only 1 of 4 hooks could block anything. When I measured, my agent read back its external writes in 8% of the turns that needed it, although a written rule told it to every time.
 
-So my stance is simple. Rules are cheap. Enforcement and measurement are what change behavior.
+That is the stance in the note at the top: a rule only changes behavior once something enforces it, and only counts once something measures it.
 
 I work in a loop. **Capture** what I learn and decide. **Verify** every write and every claim before calling it done. **Hand off** state to a file, not to a session's memory. **Compound**: measure what changed, write it in the [lab](lab/), and adjust. This repo is that loop, packaged so you can install it. The long version is in [docs/how-i-work.md](docs/how-i-work.md).
 
