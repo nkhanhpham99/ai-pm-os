@@ -33,23 +33,39 @@ graders:
     pattern: 'copies:\s*3\s*(->|→)\s*0'
     flags: i
     weight: 1
+  # One grader per file, each shown that file's final contents. The `files`
+  # focus lists only files a run creates, so it cannot see edits to these
+  # pre-existing files (found 2026-11-03: every judge was shown "(no file changes)").
   - type: llm
-    name: all-copies-fixed
-    focus: files
-    weight: 2
+    name: claude-md-fixed
+    focus: {source: file, path: CLAUDE.md}
+    weight: 1
     criteria: >
-      Three files originally stated the old limit of 100 requests per minute in
-      different wording: CLAUDE.md, notes/api-limits.md and notes/onboarding.md.
-      Pass only if all three now state 600 requests per minute, and each of the
-      three keeps the old claim only inside a short Conflicts note that includes
-      a date (so no unmarked statement of the 100 limit survives anywhere).
-      Fail if any file was missed, if the old claim was silently deleted with
-      no Conflicts note, or if any file still states 100 as the current limit.
-      Also fail if unrelated content was damaged: the other facts in each file
-      (for example "Deploys go out on Tuesdays", the max page size of 50 items,
-      the 5 webhook retries, the steps about creating an API key and using
-      webhooks, and the ai-pm-os settings block in CLAUDE.md) must survive
-      unchanged.
+      This file originally said Orbit's public API allows 100 requests per
+      minute per key. Pass only if it now states 600 requests per minute as the
+      current limit, the old 100 figure appears only inside a short Conflicts
+      note that includes a date, and the other content survives unchanged:
+      "Deploys go out on Tuesdays" and the ai-pm-os settings block.
+  - type: llm
+    name: api-limits-fixed
+    focus: {source: file, path: notes/api-limits.md}
+    weight: 1
+    criteria: >
+      This file's table originally gave the rate limit as 100 req/min per API
+      key. Pass only if the table now gives 600 requests per minute, the old
+      100 figure appears only inside a short Conflicts note that includes a
+      date, and the other rows survive unchanged: max page size 50 items and
+      webhook retries 5.
+  - type: llm
+    name: onboarding-fixed
+    focus: {source: file, path: notes/onboarding.md}
+    weight: 1
+    criteria: >
+      Step 2 of this file originally said to stay under the rate limit of 100
+      per minute. Pass only if it now says 600 requests per minute, the old 100
+      figure appears only inside a short Conflicts note that includes a date,
+      and the other steps survive unchanged: creating an API key and
+      subscribing to webhooks.
   - type: llm
     name: report-lists-files
     focus: last_message

@@ -90,7 +90,7 @@ The [lab](lab/) is a notebook of dated experiments on my own setup. Each entry h
 
 Latest entries:
 
-- [006: Does self-correct pass its own eval?](lab/006-does-self-correct-pass-its-own-eval.md). Not yet. An eval plants one stale fact in three files: 0.25 with the plugin at first, 0.50 after one tightening, 0.00 without. The copies line now passes every run; the "every copy fixed" grader still fails.
+- [006: Does self-correct pass its own eval?](lab/006-does-self-correct-pass-its-own-eval.md). First 0.25, then 0.50 after tightening the skill. The last failure turned out to be the grader: it could not see edits to existing files. With per-file graders, one run scored 1.00. The full run with a no-plugin baseline is pending.
 - [005: Does logging every update keep my docs true?](lab/005-a-fix-that-left-its-warning-behind.md). No: the update was logged twice, but a fix was added beside an old warning instead of rewriting it, and a routine turned that warning into a task without checking the real config. 5 stale copies, down to 0. Three rules added: rewrite don't add, compact, check the premise.
 - [004: Guardrails that match on text misfire](lab/004-guardrails-that-match-text-misfire.md). A text-matching git guard blocked a harmless script that only contained the text of a dangerous command. Lesson: match parsed commands, not raw strings. Open, fix not built.
 

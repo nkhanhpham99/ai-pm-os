@@ -27,3 +27,12 @@
 
 - **Decision:** Iterate. Keep the tightened steps, because the copies line went from 0 of 3 runs to 3 of 3. Do not claim "fixes every copy" as measured until the eval passes.
 - **Next:** Re-run with `--keep-temp`, read why the judge fails "every copy fixed" (the skill, or a grader stricter than the skill), fix whichever is wrong, and record the new score here as a dated update.
+
+**Update 2026-11-03, later:** the remaining failure was the grader, not the skill. In a traced run, all three files ended up correct, each with its own dated Conflicts line, and the other facts in each file survived. But the "every copy fixed" judge had been shown "(no file changes)" in every run. The eval tool's `files` view lists only files a run creates, and this case edits three files that already exist, so that grader could never pass. It carried 2 of the 4 weight points, so 0.50 was the highest reachable score, which the tightened skill hit in every run.
+
+I replaced it with one grader per file, each shown that file's final contents. One run with the plugin: 1.00, all five graders passing, $0.17. Source: the eval report, 2026-11-03.
+
+Not yet re-measured: three runs, and the no-plugin baseline under the new graders. The earlier 0.00 baseline was scored with the broken grader, so the true difference is unknown until then.
+
+- **Decision:** Keep the per-file graders and the tightened steps.
+- **Next:** Run the full eval (three runs with the plugin, three without) and record the score and the difference here.

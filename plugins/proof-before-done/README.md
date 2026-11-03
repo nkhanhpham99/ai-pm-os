@@ -15,7 +15,7 @@ In my own sessions, measured 2026-11-02: 3,731 turns, 538 of them wrote to an ex
 | `hooks/proof_before_done.py post` | PostToolUse. After a write to an external tool, reminds the agent to read it back and report a link plus a one-line "what changed". |
 | `hooks/proof_before_done.py stop` | Stop. If the turn wrote externally, never read it back after the last write, and the final message claims completion, it blocks the stop once and asks for the read-back or an explicit "not verified". |
 | `scripts/backtest.py` | Replays the Stop check over your own past transcripts so you can see your own number before you trust mine. |
-| `skills/self-correct` | When a stale or wrong claim is caught, finds every copy across your instruction files and memory, fixes them all, and reports `copies: N -> 0`. Its eval does not pass yet: 0.50 with the plugin, 0.00 without ([lab 006](../../lab/006-does-self-correct-pass-its-own-eval.md)). |
+| `skills/self-correct` | When a stale or wrong claim is caught, finds every copy across your instruction files and memory, fixes them all, and reports `copies: N -> 0`. Its eval scored 1.00 in one run after a grader fix; the full run with a no-plugin baseline is pending ([lab 006](../../lab/006-does-self-correct-pass-its-own-eval.md)). |
 
 The hooks fail open. Any parse problem, missing transcript, empty or non-JSON input exits 0 with no output, so a bug here can never block your session. They need `python3` and nothing else.
 
