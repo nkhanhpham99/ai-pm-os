@@ -205,6 +205,25 @@ class RoutineCheckTest(unittest.TestCase):
         rc, out = run_checker(self.root, "--routine")
         self.assertEqual(rc, 0, out)
 
+    def test_routine_duplicate_section_fails(self):
+        headings = ROUTINE_HEADINGS + ["Guardrails"]
+        path = write_routine(self.root, "demo-routine", headings)
+        rc, out = run_checker(self.root, "--routine")
+        self.assertEqual(rc, 1, out)
+        self.assertIn(path, out)
+        self.assertIn("duplicate", out)
+
+    def test_routine_mixed_fences_do_not_close_each_other(self):
+        # a ``` line inside a ~~~ fence must not end the fence, so the
+        # "## Workflow" inside it stays hidden; the real "## Extra" after it counts
+        extra = "~~~markdown\n```\n## Workflow\n```\n~~~\n\n## Extra\n"
+        path = write_routine(self.root, "demo-routine", ROUTINE_HEADINGS, extra=extra)
+        rc, out = run_checker(self.root, "--routine")
+        self.assertEqual(rc, 1, out)
+        self.assertIn(path, out)
+        self.assertIn("Extra", out)
+        self.assertNotIn("Workflow", out)
+
     def test_routine_check_runs_in_default_mode(self):
         path = write_routine(self.root, "demo-routine", ROUTINE_HEADINGS[:-1])
         rc, out = run_checker(self.root)

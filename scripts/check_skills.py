@@ -18,7 +18,8 @@ Routine rule (skills under plugins/pm-routines/skills/):
   - the body's level-2 ("## ") sections are exactly, in order: When to use,
     Defaults, Modes, Readiness check, Run, Honest summary, Guardrails.
     A heading may carry a suffix after the name, e.g. "## Modes (`setup` / ...)".
-    "###" subsections are free; headings inside ``` fences are ignored.
+    "###" subsections are free; headings inside ``` or ~~~ fences are ignored
+    (a fence closes only on the same character, at least as long).
   - Applied in the default mode too, so CI catches drift. --routine checks only
     the routine skills (frontmatter + sections) and fails if none are found.
 """
@@ -41,7 +42,7 @@ ROUTINE_SECTIONS = [
     "Honest summary",
     "Guardrails",
 ]
-FENCE_RE = re.compile(r"^\s*(```|~~~)")
+FENCE_RE = re.compile(r"^\s{0,3}(`{3,}|~{3,})(.*)$")
 H2_RE = re.compile(r"^##\s+(.+?)\s*#*\s*$")
 
 
@@ -227,12 +228,17 @@ def _h2_headings(text):
             if lines[i].strip() == "---":
                 start = i + 1
                 break
-    out, in_fence = [], False
+    out, fence = [], None  # fence = the opening run, e.g. "```" or "~~~~"
     for ln in lines[start:]:
-        if FENCE_RE.match(ln):
-            in_fence = not in_fence
-            continue
-        if in_fence:
+        m = FENCE_RE.match(ln)
+        if fence is None:
+            if m:
+                fence = m.group(1)
+                continue
+        else:
+            # only the same character, at least as long, with no info string, closes it
+            if m and m.group(1)[0] == fence[0] and len(m.group(1)) >= len(fence) and not m.group(2).strip():
+                fence = None
             continue
         m = H2_RE.match(ln)
         if m and not ln.startswith("###"):

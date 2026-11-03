@@ -22,10 +22,11 @@ Not for exploring why one metric moved. Investigate that separately, then record
 ## Defaults
 
 Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md before using these.
-- **Data folder:** `./metrics-review/` (setting name: `metrics review folder`). Holds `METRICS.md` (the brief), `LEARNINGS.md`, `RUN-LOG.md` and one file per week, `YYYY-Www.md`. Create it at setup. Quote paths. If the settings rename the folder, treat every mention of `./metrics-review/` below as that path.
-- **Decisions file:** `./decisions.md` (setting name: `decisions file`, shared with the decision-ledger skill). Read only, never written by this routine. If it does not exist, the review says so and carries on.
+- **Data folder:** `./metrics-review/` (setting name: `metrics review folder`). Holds `METRICS.md` (the brief), `LEARNINGS.md`, `RUN-LOG.md` and one file per review week, `YYYY-Www.md`. Create it at setup. Quote paths. If the settings rename the folder, treat every mention of `./metrics-review/` below as that path.
+- **Decisions file:** `./decisions.md` (setting name: `decisions file`, shared with the decision-ledger skill). **Precedence:** the `Decisions file` field in `METRICS.md` wins when it is filled, because it is the approved path a scheduled run sees; at setup that field defaults to the `decisions file` setting, else `./decisions.md`. Read only, never written by this routine. If it does not exist, the review says so and carries on.
 - **Templates:** [METRICS](assets/METRICS.template.md) for the brief, [the week template](assets/week-template.md) for each week's file.
-- **Dates:** `YYYY-MM-DD`, and ISO weeks as `YYYY-Www` (run `date +%G-W%V` for this week). Use the date from the environment or conversation; if neither gives one, run `date +%F`. Never guess.
+- **Dates:** `YYYY-MM-DD`. Use the date from the environment or conversation; if neither gives one, run `date +%F`. Never guess.
+- **Review week:** the ISO week (`YYYY-Www`, Monday to Sunday) the review covers. It is always the ISO week just ended: on the brief's run day (default Monday) and on any other day, the week before the current one. Get it with `date -v-7d +%G-W%V` (macOS) or `date -d '7 days ago' +%G-W%V` (GNU). The week file is named after the review week. **Last week** means the review week minus one (`date -v-14d +%G-W%V` or `date -d '14 days ago' +%G-W%V`). If the user explicitly asks mid-week for the week still in progress, write it as `YYYY-Www-partial.md` for the current week; a partial file never counts as that week's review, so the scheduled run still writes the full one.
 - **Tune cadence:** every 4 runs, or on request. The brief's `Tune every` field overrides it.
 - **Storage:** markdown. If the brief's destination is Notion, read [using Notion](references/using-notion.md) (untested); the markdown week file is still written first.
 
@@ -49,7 +50,7 @@ Every N runs (`Tune every` in the brief, default 4), or on request. Read `RUN-LO
 - Targets already passed or plainly out of reach, owners missing, status-color rules that could not be applied, and `review_by` passed or near.
 - Top-3 commitments that slipped two weeks running.
 
-Propose concrete edits to `METRICS.md`, walk them one at a time, and apply **only the ones the user approves**, using the Edit tool on the labelled lines. Record the tune (question, evidence, edits applied or rejected) in `LEARNINGS.md`, add a `tune` row to `RUN-LOG.md`, read both back. In an unattended run, write the proposal into the summary and `LEARNINGS.md` as `proposed, awaiting approval`, and change nothing else.
+Propose concrete edits to `METRICS.md`, walk them one at a time, and apply **only the ones the user approves**, using the Edit tool on the labelled lines. If `review_by` has passed, the new date is the last question. Record the tune (question, evidence, edits applied or rejected) in `LEARNINGS.md`, add a `tune` row to `RUN-LOG.md`, read both back. In an unattended run, write the proposal into the summary and `LEARNINGS.md` as `proposed, awaiting approval`, and change nothing else. While such a proposal is still pending, an unattended run does not write a new one; its summary says one line: "a tune proposal from <date> is awaiting approval".
 
 ## Readiness check
 
@@ -57,8 +58,8 @@ Run this before every `run` and `tune`. Do not run degraded.
 
 1. **If the brief file is missing → `setup`.** No `METRICS.md` in the data folder means the interview has not happened.
 2. **If `Status` is not `approved`** → show the draft and ask for approval. Stop.
-3. **If any field marked REQUIRED in the brief is empty, or `review_by` has passed** → ask about that field and stop. Empty means blank, an unfilled `<placeholder>`, or `needs input`. Name every empty field. A metric that cannot be *read* this week is not an empty field; that is handled in the run as "awaiting".
-4. **If this week's file already exists**, ask whether to refresh it or stop. Never overwrite a week silently.
+3. **If any field marked REQUIRED in the brief is empty, or `review_by` has passed** → ask about that field and stop. Empty means blank, an unfilled `<placeholder>`, or `needs input`. Name every empty field. The number of KRs must sit inside the brief's `KR range` (an adjustable default of 3 to 6); outside it, ask. A metric that cannot be *read* this week is not an empty field; that is handled in the run as "awaiting". **Exception:** an interactive `tune` is not blocked by a passed `review_by`; it runs, and the new date becomes its last question.
+4. **If the review week's file already exists**, this run would duplicate that review week. Interactive: show the existing file and ask whether to update it or stop. Unattended: append a `not ready (duplicate of <review week>)` row and stop. Never overwrite a week silently.
 
 When nobody is there to answer (a scheduled run), "ask" means: put the question at the top of the honest summary, append a `not ready` row to `RUN-LOG.md`, and stop.
 
@@ -66,16 +67,16 @@ When nobody is there to answer (a scheduled run), "ask" means: put the question 
 
 Keep a todo list so no step is skipped.
 
-1. **Read state.** `METRICS.md` in full, `LEARNINGS.md` entries since the last tune, the last rows of `RUN-LOG.md`, and last week's file (the previous ISO week). If last week's file is missing, every comparison this week is "no prior week".
+1. **Read state.** Work out the review week and last week (see Defaults). Read `METRICS.md` in full, `LEARNINGS.md` entries since the last tune, the last rows of `RUN-LOG.md`, and last week's file (review week minus one; ignore `-partial` files). If last week's file is missing, every comparison is "no prior week". Metric values cover the review week's Monday to Sunday.
 2. **Pull every metric live**, exactly as the brief defines it: the named tool and the exact query, dashboard or insight id. Read-only calls only. Record the value exactly as the source returns it, the time you read it, and the query you actually ran.
    - **Unreadable** (tool missing, auth expired, query errors, source not yet built): leave the value blank and write `awaiting <owner or source>: <reason>`. Never estimate it, never reuse last week's number, never write 0 for "could not read".
    - A value the brief flags as known-broken (for example "reads 0 until the tracking fix ships") is reported with that flag, not as a real number.
 3. **Compare week over week** as `A -> B` with last week's recorded value. If either side is blank, say which (`awaiting -> B`, `A -> awaiting`). If the source or query changed since last week, mark the row `definition changed`.
 4. **Color the week** using the brief's status-color rules, literally. Show which rule fired. If a rule needs a value that is awaiting, do not guess the color: write `not judged: <which input is awaiting>`.
-5. **Audit last week's top 3.** For each commitment in last week's file: `done`, `slipped` or `partly`, each with the evidence (where you saw it) and the owner. With no evidence either way, write `unconfirmed: ask <owner>`. Never mark an item done on inference.
+5. **Audit last week's top 3.** Last week's file listed the commitments for the review week. For each one: `done`, `slipped` or `partly`, each with the evidence (where you saw it) and the owner. With no evidence either way, write `unconfirmed: ask <owner>`. Never mark an item done on inference.
 6. **Copy in open decisions** from the decisions file, if it exists (see "Reading decisions.md" below). Copy them; never invent decision text. A decision the user mentions this week that has no entry is listed as `not yet logged`.
-7. **Next week's top 3.** Write the commitments the user gives, verbatim, with an owner each. If none are given (a scheduled run), write `needs input` and list up to three *suggestions* drawn from this week's red and awaiting rows, labelled as suggestions. Only confirmed commitments are audited next week.
-8. **Write the week file** `./metrics-review/YYYY-Www.md` from [the week template](assets/week-template.md). Append one row to `RUN-LOG.md`.
+7. **Next week's top 3** (the commitments for the week after the review week, which the next review audits). Write the commitments the user gives, verbatim, with an owner each. If none are given (a scheduled run), write `needs input` and list up to three *suggestions* drawn from this week's red and awaiting rows, labelled as suggestions. Only confirmed commitments are audited next week.
+8. **Write the week file** `./metrics-review/<review week>.md` (for example `2026-W45.md`) from [the week template](assets/week-template.md). Append one row to `RUN-LOG.md`.
 9. **Read back** the week file from disk: every metric row present, the status line, the audit, the decisions section, the top 3. Read back the new `RUN-LOG.md` row. Fix anything that did not land and read again, or report "not verified: <reason>".
 10. **Count runs since the last tune.** If it reaches `Tune every`, run `tune` (interactive) or put the proposal in the summary (unattended).
 
@@ -89,8 +90,8 @@ The decisions file is a list of entries. Each is a `## D-NNN · <title>` heading
 
 ### RUN-LOG.md and LEARNINGS.md formats
 `RUN-LOG.md` is a table, one row per run, newest at the bottom:
-`| Week | Date | Mode | Status color | Metrics read | Awaiting (metric: owner or source) | Definition changes | Top-3 audit (done/slipped/partly/unconfirmed) | Notes |`
-Mode is `run`, `tune` or `not ready`. `LEARNINGS.md` entries are `## YYYY-MM-DD · <metric or item>` followed by `- Kind:`, `- Week:`, `- What happened: "<verbatim>"`.
+`| Review week | Date | Mode | Status color | Metrics read | Awaiting (metric: owner or source) | Definition changes | Top-3 audit (done/slipped/partly/unconfirmed) | Notes |`
+Mode is `run`, `tune` or `not ready` (with the reason, for example `duplicate of 2026-W45`). `LEARNINGS.md` entries are `## YYYY-MM-DD · <metric or item>` followed by `- Kind:`, `- Week:`, `- What happened: "<verbatim>"`.
 
 ## Honest summary
 

@@ -1,6 +1,6 @@
 ---
 name: market-research
-description: Use when the user wants outside evidence gathered before a product or go-to-market decision - market size, competitors and their pricing or positioning, what real people say in communities or reviews, scientific or official evidence for a claim, news, or what is trending in the market. Triggers include "research X", "look into competitors", "what are people saying about", "is there evidence that", "size the opportunity", "competitive teardown", or a bare "look into X" that needs verifiable outside facts. Not for explaining a concept (knowledge-base), writing a requirements doc (prd), or logging a decision (decision-ledger).
+description: Use when the user wants outside evidence gathered before a product or go-to-market decision - market size, competitors and their pricing or positioning, what real people say in communities or reviews, scientific or official evidence for a claim, news, or what is trending in the market. Triggers include "research X", "look into competitors", "what are people saying about", "is there evidence that", "size the opportunity", "competitive teardown", or a bare "look into X" that needs verifiable outside facts. Not for explaining a concept (knowledge-base), writing a requirements doc (prd), or logging a decision (decision-ledger). Not for a recurring social/competitor sweep (use market-sweep).
 license: MIT
 ---
 

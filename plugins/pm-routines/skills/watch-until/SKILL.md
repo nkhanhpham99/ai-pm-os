@@ -55,17 +55,20 @@ The Run section below. Readiness check first, every time.
 Record what the user says about an alert or a run: useful, noise, a false positive, too late, or a check that misread the output. Append to `LEARNINGS.md` with the date and their words verbatim. Read it back.
 
 ### `tune`: the routine retro
-Every 4 runs, or on request. Read `RUN-LOG.md` and `LEARNINGS.md` and report: runs that errored or timed out, runs that were `unclear` and why, how close the check comes to the time limit, how far away the expiry date is, and any learnings about false positives. Propose concrete edits to `WATCH.md` (a faster check, a sharper "true when", a new expiry date) and apply **only the ones the user approves**. In an unattended run, put the proposal in the summary and change nothing.
+Every 4 runs (counted in Run, step 7), or on request. Read `RUN-LOG.md` and `LEARNINGS.md` and report: runs that errored or timed out, runs that were `unclear` and why, how close the check comes to the time limit, how far away the expiry date is, and any learnings about false positives. Propose concrete edits to `WATCH.md` (a faster check, a sharper "true when", a new expiry date) and apply **only the ones the user approves**. In an unattended run, put the proposal in the summary and `LEARNINGS.md` as `proposed, awaiting approval` and change nothing; while that proposal is pending, later runs do not propose again. Record an applied tune as a `tune` row in `RUN-LOG.md`.
 
 ## Readiness check
 
 Run this before every `run`.
 
 1. **If the brief file is missing → `setup`.**
-2. **If the marker file exists** → the watch has already alerted (or expired). Do not check, do not alert. One line: "<watch> already alerted on <date from the marker>. Delete or disable its scheduled task." Stop.
+2. **If the marker file exists** → the watch is finished. Do not check, do not alert. Read the marker's first line and say one line to match it:
+   - `alerted <date>`: "<watch> already alerted on <date>. Delete or disable its scheduled task."
+   - `expired <date>`: "<watch> expired on <date> without becoming true. Delete or disable its scheduled task."
+   Append an `already alerted` or `expired` row to `RUN-LOG.md` accordingly, and stop.
 3. **If `Status` is not `approved`** → ask for approval and stop.
 4. **If any field marked REQUIRED in the brief is empty** → ask about that field and stop. Empty means blank, an unfilled `<placeholder>`, or `needs input`. Name every empty field.
-5. **If the expiry date has passed** (the brief's `review_by` is its expiry date) → retire: send one expiry notice through the alert channel ("<condition> did not become true before <expiry>; this watch has stopped"), write the marker with `expired` and today's date, read the marker back, tell the user to delete the schedule, and stop.
+5. **If the expiry date has passed** (the brief's `review_by` is its expiry date) → retire: send one expiry notice through the alert channel ("<condition> did not become true before <expiry>; this watch has stopped"), write the marker with `expired` and today's date, read the marker back, append an `expired` row to `RUN-LOG.md`, tell the user to delete the schedule, and stop. If the brief has an `If it expires` note, put it in the notice.
 
 When nobody is there to answer (a scheduled run), "ask" means: put the question in the honest summary, append a `not ready` row to `RUN-LOG.md`, and stop.
 
@@ -73,8 +76,8 @@ When nobody is there to answer (a scheduled run), "ask" means: put the question 
 
 The whole run must finish inside the time limit. Keep it to the steps below.
 
-1. **Read `WATCH.md`.** Only that file and the last row of `RUN-LOG.md`. Each run starts fresh; everything it needs is in the brief.
-2. **Perform the check** exactly as written in the brief. Do not improvise a different check. Every shell call carries a timeout (see Guardrails). If the call hangs, errors or times out, retry **once**. If it fails again, record `error`, write "could not check today: <reason>" in the summary, and stop. An error never alerts.
+1. **Read `WATCH.md`.** Only that file and the `RUN-LOG.md` rows since the last `tune` row (for step 7). Each run starts fresh; everything it needs is in the brief.
+2. **Perform the check** exactly as written in the brief. Do not improvise a different check. A check may be a few read-only commands (for example a certificate's dates, then the site's status); run each one as written. Every shell call carries a timeout (see Guardrails). If the call hangs, errors or times out, retry **once**. If it fails again, record `error`, write "could not check today: <reason>" in the summary, and stop. An error never alerts.
 3. **Evaluate "true when"** against the raw output, literally. The result is one of:
    - `true`: the output meets the brief's "true when".
    - `false`: it does not.
@@ -87,6 +90,7 @@ The whole run must finish inside the time limit. Keep it to the steps below.
    4. **Read the marker back** from disk.
    5. **Retire**: tell the user the watch is done and how to delete or disable its scheduled task (see `SCHEDULING.md`). Never delete or edit the schedule yourself.
 6. **Append one row to `RUN-LOG.md`** and read it back.
+7. **Count runs since the last tune** (rows after the last `tune` row, or all rows). If it reaches 4 and the watch is still live: interactive, run `tune`; unattended, add a one-line tune proposal to the summary, unless one is already `proposed, awaiting approval`.
 
 ### RUN-LOG.md, LEARNINGS.md and marker formats
 `RUN-LOG.md` is a table, newest at the bottom: `| Date | Result | Observed | Duration | Notes |`. Result is `true`, `false`, `unclear`, `error`, `not ready`, `already alerted`, `expired` or `tune`. Observed is a short excerpt of the raw output, never a paraphrase.

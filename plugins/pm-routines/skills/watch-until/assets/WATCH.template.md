@@ -18,6 +18,7 @@ Each run reads only this file. Fields marked REQUIRED must be filled before a ru
 ## Retiring
 - Expiry date (review_by) (REQUIRED):
 - Marker path (REQUIRED):
+- If it expires (optional): what the user should check or ask someone to check if the condition never became true
 
 <!-- Everything above this line is the brief to copy into WATCH.md. Do not copy the example below. -->
 
@@ -46,6 +47,7 @@ Every value below is fictional. The endpoint is a placeholder domain and the pro
 ## Retiring
 - Expiry date (review_by) (REQUIRED): 2026-03-02
 - Marker path (REQUIRED): /absolute/path/to/project/watch-until/new-app-version/ALERTED
+- If it expires (optional): check the store's review status for the build; it may be stuck in review.
 ```
 
 How to read it: every run calls the listing once with a 20-second cap. While the version is still 2.3.0, the run logs `false` and says one line. On the first run where it differs, it sends the push notification with the observed version filled in, writes the marker, and tells the user to delete the schedule. If 2026-03-02 passes first, it sends one notice that the watch expired and retires.

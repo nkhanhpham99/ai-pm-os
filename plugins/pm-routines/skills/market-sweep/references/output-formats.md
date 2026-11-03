@@ -4,6 +4,8 @@ Every run writes, in this order: the sweep file, the run-log row, the watchlist 
 
 ## 1. The sweep file: `<output destination>/YYYY-MM-DD.md`
 
+The output destination defaults to `sweeps/` inside the data folder; the file goes directly in it.
+
 The complete record, including everything that failed or was skipped. If two runs land on one date, add `-2` to the second.
 
 ```markdown

@@ -17,7 +17,7 @@ This is the order of the REQUIRED fields in `METRICS.md`.
 | # | Field | Question | Recommended default |
 |---|---|---|---|
 | 1 | North star | "Which one number best says the product is working?" | Drafted from the project's docs or existing OKRs, if any. Otherwise no default. |
-| 2 | Key results (3 to 6) | "Which 3 to 6 key results do you want on the scoreboard every week?" | The KRs in the project's docs, if any. |
+| 2 | Key results (3 to 6, an adjustable default) | "Which 3 to 6 key results do you want on the scoreboard every week?" | The KRs in the project's docs, if any. |
 | 3 | Per KR: source | For each KR, one at a time: "Where does this number live? Name the tool and the exact query, saved insight or dashboard tile." | The best match found in the foundation pass, shown with the value it returned. |
 | 4 | Per KR: owner | "Who is accountable for this number?" | `needs input` until the user names someone. Never assume it is the user. |
 | 5 | Per KR: target | "What value, by when, counts as hitting it?" | The target in the project's docs, if any. Otherwise `needs input`. |
@@ -26,8 +26,8 @@ This is the order of the REQUIRED fields in `METRICS.md`.
 | 8 | `review_by` | "When should we revisit the whole brief?" | The end of the current quarter. |
 
 Then the optional fields, one question each, all skippable:
-- **Where open decisions live**: default `./decisions.md` (the `decisions file` setting). If the decision-ledger skill is installed, use its file.
-- **Run day**: default Monday, covering the ISO week just ended.
+- **Where open decisions live**: default the `decisions file` setting if the user's CLAUDE.md has one, else `./decisions.md` (the decision-ledger skill's file, if installed). Write it into the brief's `Decisions file` field as an absolute path; that field then wins over the setting for this routine.
+- **Run day**: default Monday. Every run reviews the ISO week just ended (the review week), whatever day it runs.
 - **Known-broken metrics**: any metric that reads wrong until something ships ("reads 0 until the tracking fix lands"). It is reported with that flag, never as a real value.
 - **Tune every**: default 4 runs.
 

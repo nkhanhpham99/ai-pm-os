@@ -39,7 +39,7 @@ Proposed edits:
 Not changing: <anything considered and rejected, with the reason>
 ```
 
-Then walk the edits **one at a time** and ask yes, no or change. Apply only the approved ones, using the Edit tool on the labelled lines. Never rewrite the whole file. When `review_by` has passed, the last question is the new date.
+Then walk the edits **one at a time** and ask yes, no or change. Apply only the approved ones, using the Edit tool on the labelled lines. Never rewrite the whole file. When `review_by` has passed, the last question is the new date. (The readiness check lets an interactive tune run with a passed `review_by` for exactly this reason.)
 
 ## Recording the tune
 
@@ -50,3 +50,5 @@ Then walk the edits **one at a time** and ask yes, no or change. Apply only the 
 ## Unattended runs
 
 A scheduled run cannot ask for approval. When a tune is due in an unattended run, compute the numbers and write the proposal into the honest summary and into `LEARNINGS.md` marked `proposed, awaiting approval`. Change nothing else. The next interactive session walks the proposal.
+
+While a `proposed, awaiting approval` entry is still pending in `LEARNINGS.md`, an unattended run does not propose again. Its summary says one line instead: "a tune proposal from <date> is awaiting approval". The window for the next tune still starts at the last `tune` row in `RUN-LOG.md`, so nothing is lost by waiting.

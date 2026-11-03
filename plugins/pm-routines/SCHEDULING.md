@@ -51,15 +51,15 @@ Runs on your machine through `cron`, headless. `claude -p "<prompt>"` runs one n
 
 ```cron
 # Mondays at 08:00: weekly metrics review
-0 8 * * 1 cd "/absolute/path/to/project" && timeout <seconds> /absolute/path/to/claude -p "$(cat .routines/weekly-metrics-review.prompt)" --allowedTools "Read,Write,Edit,Bash,Glob,Grep" >> metrics-review/cron.log 2>&1
+0 8 * * 1 cd "/absolute/path/to/project" && timeout <seconds> /absolute/path/to/claude -p "$(cat .routines/weekly-metrics-review.prompt)" --allowedTools "Read,Write,Edit,Glob,Grep,Bash(date:*)" >> metrics-review/cron.log 2>&1
 
 # Daily at 09:00: a watch (3-minute hard limit)
-0 9 * * * cd "/absolute/path/to/project" && timeout 180 /absolute/path/to/claude -p "$(cat .routines/watch-new-version.prompt)" --allowedTools "Read,Write,Edit,Bash" >> watch-until/new-version/cron.log 2>&1
+0 9 * * * cd "/absolute/path/to/project" && timeout 180 /absolute/path/to/claude -p "$(cat .routines/watch-new-version.prompt)" --allowedTools "Read,Write,Edit,Bash(curl:*),Bash(date:*)" >> watch-until/new-version/cron.log 2>&1
 ```
 
 Notes:
 - **`timeout` is the outer hard limit.** On macOS it is not installed by default: install GNU coreutils and use `gtimeout`, or the run has no outer limit.
-- **Headless runs cannot answer permission prompts.** List the tools the routine needs in `--allowedTools` (add `WebSearch,WebFetch` for `market-sweep`, and the MCP tools for your data sources and alert channel). Anything not allowed is refused, and the run reports it. Do not use a permission mode that skips checks.
+- **Headless runs cannot answer permission prompts.** List the tools the routine needs in `--allowedTools`, and scope the shell to the commands the routine actually runs (`Bash(curl:*)` for a watch whose check is a `curl` call, `Bash(date:*)` for working out dates) rather than allowing plain `Bash`. Add `WebSearch,WebFetch` for `market-sweep`, and the MCP tools for your data sources and alert channel. Anything not allowed is refused, and the run reports it. Do not use a permission mode that skips checks.
 - `--max-budget-usd <amount>` caps what one run can spend.
 - The run uses your existing Claude Code login. If it expires, runs fail; check the log file.
 - On macOS, `cron` may need permission to read some folders. `launchd` is the native alternative with the same command.
@@ -83,7 +83,7 @@ Read back every file you write before the summary. End with the honest summary.
 ### weekly-metrics-review
 
 ```text
-Use the weekly-metrics-review skill in run mode for the ISO week just ended.
+Use the weekly-metrics-review skill in run mode for the review week (the ISO week just ended).
 The data folder is <absolute path>/metrics-review/ and the decisions file is <absolute path>/decisions.md.
 This is an unattended scheduled run: nobody can answer questions. Wherever the skill says to ask,
 put the question at the top of your summary. Leave next week's top 3 as needs input with labelled suggestions.
