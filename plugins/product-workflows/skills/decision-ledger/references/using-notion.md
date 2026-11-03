@@ -14,9 +14,9 @@ Use one database row per entry. Read the database schema first, since property n
 | Type, Status, Priority, Topic | Select properties |
 | Owner | Person or text |
 | Logged, Review by | Date |
-| Metric, Baseline, Target | Text (so `needs input` and `none set` fit) |
+| Metric, Baseline, Target | Text (so `needs input` and `none set` fit). Baseline and Target hold the value only |
 | Reasoning, Outcome, Lesson | Text or page body |
-| Provenance | Text |
+| Provenance | Text (the source of each number goes here, not in Baseline or Target) |
 
 ## Rules (same as the markdown version)
 

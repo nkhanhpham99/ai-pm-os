@@ -11,7 +11,7 @@ How to get trustworthy material out of each kind of source, and how to grade it.
 | **C** | Forums, social posts, app-store reviews, individual anecdotes, marketing blogs, vendor-sponsored "studies" | Signal, not proof. Tells you what to investigate and adds qualitative voice. Do not generalize it or quote it as a population statistic. |
 | **D** | Undated, unattributed, AI-generated or content-farm pages | Avoid. If unavoidable, flag loudly and treat it as a lead to verify, never as evidence. |
 
-The most common research error is laundering a Tier C figure ("a commenter said 70% of people...") into an analysis claim as if it were Tier A. Do not.
+The most common research error is laundering a Tier C figure ("a commenter said most people...") into an analysis claim as if it were Tier A. Do not.
 
 ## Community discussions (Reddit and similar)
 
@@ -26,7 +26,7 @@ Best for: what real people feel, complain about, ask for and recommend. This is 
 
 ## Web, news and trends
 
-Best for: market size, growth, funding, competitor news, regulation, what is trending now. Add the current year to recency-sensitive queries.
+Best for: market size, growth, funding, competitor news, regulation, what is trending in the market now. Add the current year to recency-sensitive queries.
 
 - Search to find candidates, then fetch the actual page and extract the exact figure and its date.
 - **Chase the primary source.** An article that says a market "will reach X by year Y" is re-citing a report. Find that report and capture its name, date and methodology. Cite the primary, and note the secondary as where you found it.

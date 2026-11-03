@@ -10,7 +10,6 @@ license: MIT
 Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md before using these.
 - **Decisions file:** `./decisions.md` (setting name: `decisions file`). One markdown file holds every entry. If it does not exist, create it from the header of [the decisions template](assets/decisions-template.md). Quote paths.
 - **Date format:** `YYYY-MM-DD`. Use the date from the environment or conversation; if neither gives one, run `date +%F`. Never guess. Today's date is what "past Review by" is measured against.
-- **Priority options:** `P0 push hard`, `P1 normal`, `P2 easy-iterate`.
 - If the settings rename the file, treat every mention of `decisions.md` below as that path.
 - Storage is markdown. If the user wants the ledger in Notion, read [using Notion](references/using-notion.md) (untested).
 
@@ -34,17 +33,19 @@ Each entry in `decisions.md` is a `## <id> · <title>` heading followed by these
 | `Owner` | who is accountable, or `needs input` |
 | `Logged` | `YYYY-MM-DD` |
 | `Topic` | a short area label (reuse the labels already in the file) |
-| `Priority` | `P0 push hard`, `P1 normal` or `P2 easy-iterate` |
+| `Priority` | `P0 push hard`, `P1 normal` or `P2 easy-iterate`. This enum is fixed |
 | `Metric` | the measure the bet is judged on, or `needs input`, or `none set` |
-| `Baseline` | the starting value with its source, or `needs input`, or `none set` |
-| `Target` | the value to reach, or `needs input`, or `none set` |
+| `Baseline` | the starting value only (for example `12% weekly retention`), or `needs input`, or `none set`. The source goes in `Provenance` |
+| `Target` | the value to reach, value only, or `needs input`, or `none set` |
 | `Review by` | `YYYY-MM-DD`, or `needs input`, or `none set` |
 | `Reasoning` | the user's own words on why |
 | `Provenance` | per number: sourced (with the source), assumed, or needs input |
 | `Outcome` | what actually happened, or `needs input` |
 | `Lesson` | the one-line takeaway, or `needs input` |
 
-- **Ids** are `D-001`, `D-002`, and so on. Read the file, take the highest number, add one. Never reuse an id, even after `superseded`.
+- **Ids** are `D-001`, `D-002`, and so on. Read the file, take the highest number, add one. When the file has no entries yet, the first id is `D-001`. Never reuse an id, even after `superseded`.
+- **Each value is a single line.** If a quoted answer has line breaks, write them as ` / `.
+- **`Priority` here is a different scale** from the P0/P1/P2 tiers in a PRD. Do not mix the two.
 - **Unknown fields hold the literal `needs input`.** A deliberate "there is no bet" is different: write `none set` in the four bet fields. Never leave a bet field blank.
 - **Status rules.** `needs input` when `Owner` is unknown, or a bet exists and any bet field is `needs input`. `open` when the entry is trackable (an owner, and a complete bet or no bet). `closed` when the outcome is known and confirmed by the user. `superseded` when a later entry replaces it.
 - A worked example is at the bottom of [the template](assets/decisions-template.md).
@@ -59,9 +60,9 @@ Ask one question at a time. Prefer a multiple-choice question when options exist
 5. **Title and reasoning** (required): the thinking behind it, in the user's own words. Do not paraphrase it away.
 6. **Owner:** who is accountable. `needs input` if they do not say.
 7. **Is there a falsifiable bet?** Ask yes or no.
-   - **Yes:** capture Metric, Baseline, Target and Review by. Ask where the baseline came from. A number with no source is recorded as assumed. A number the user does not know stays `needs input`.
+   - **Yes:** capture Metric, Baseline, Target and Review by. Write the Baseline and Target as values only and put where each came from in `Provenance`. A number with no source is recorded as assumed. A number the user does not know stays `needs input`.
    - **No:** write `none set` in the four bet fields and do not push the user to invent one. That is a valid entry for an early idea.
-8. **Does this replace an earlier entry?** If yes, set the old entry's Status to `superseded`, add its replacement id to the old entry's Outcome, and name the old id in the new entry's Reasoning, so the link runs both ways.
+8. **Does this replace an earlier entry?** If yes, set the old entry's Status to `superseded` and start its Outcome with `Superseded by D-NNN` (the new id). Start the new entry's Provenance with `Supersedes D-NNN` (the old id), so the link runs both ways. These two agent-written link phrases are exempt from the verbatim rule, which applies to the user's own statements.
 
 Then:
 - Set `Logged` to today's date, `Status` per the status rules, and `Provenance` per number.

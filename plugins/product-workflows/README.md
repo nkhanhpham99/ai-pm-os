@@ -18,7 +18,7 @@ These skills put one discipline under all three: **nothing goes in that is not s
 
 ## The decisions.md format
 
-Each entry is a `## <id> · <title>` heading followed by `- Label: value` bullets: `Type`, `Status`, `Owner`, `Logged`, `Topic`, `Priority`, `Metric`, `Baseline`, `Target`, `Review by`, `Reasoning`, `Provenance`, `Outcome`, `Lesson`. Unknown values are the literal `needs input`. A worked example is in `skills/decision-ledger/assets/decisions-template.md`. Other tools in this marketplace read this file by label, so the labels are fixed.
+Each entry is a `## <id> · <title>` heading followed by `- Label: value` bullets: `Type`, `Status`, `Owner`, `Logged`, `Topic`, `Priority`, `Metric`, `Baseline`, `Target`, `Review by`, `Reasoning`, `Provenance`, `Outcome`, `Lesson`. Unknown values are the literal `needs input`. `Baseline` and `Target` hold the value only; where a number came from goes in `Provenance`. The ledger's `Priority` (P0 push hard, P1 normal, P2 easy-iterate) is a different scale from the PRD's P0/P1/P2 tiers. A worked example is in `skills/decision-ledger/assets/decisions-template.md`. Other tools in this marketplace read this file by label, so the labels are fixed.
 
 ## Install
 
