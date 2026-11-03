@@ -20,7 +20,10 @@ jobs:
           python-version: "3.12"
 
       - name: Install Claude Code CLI
-        run: npm i -g @anthropic-ai/claude-code
+        # Pinned on purpose: `plugin validate --strict` rules can change between
+        # releases. Bump this version deliberately, in its own commit, after checking
+        # that validation still passes locally.
+        run: npm i -g @anthropic-ai/claude-code@2.1.302
 
       - name: Validate marketplace and every plugin (strict)
         run: |

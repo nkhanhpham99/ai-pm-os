@@ -1,3 +1,11 @@
+# Notes for anyone running this case:
+# - Fixtures come from scaffold.sh, so run with `--scaffold` and `--allow-tools Edit Write`.
+# - The judge model is a CLI flag, not part of this schema: add `--judge-model sonnet`
+#   for the files grader (the default judge is haiku).
+# - NOT HOME-isolated: the agent runs with your real ~/.claude, and the self-correct
+#   skill's default sweep list includes ~/.claude (CLAUDE.md, memory, agents, skills).
+#   A real copy of the stale claim there could be found or edited; run on a machine or
+#   account where that is acceptable.
 schema_version: "1.0"
 name: self-correct-three-copies
 description: >
@@ -22,7 +30,7 @@ graders:
   - type: regex
     name: report-copies-line
     target: last_message
-    pattern: 'copies:\s*3\s*->\s*0'
+    pattern: 'copies:\s*3\s*(->|→)\s*0'
     flags: i
     weight: 1
   - type: llm
@@ -37,6 +45,11 @@ graders:
       a date (so no unmarked statement of the 100 limit survives anywhere).
       Fail if any file was missed, if the old claim was silently deleted with
       no Conflicts note, or if any file still states 100 as the current limit.
+      Also fail if unrelated content was damaged: the other facts in each file
+      (for example "Deploys go out on Tuesdays", the max page size of 50 items,
+      the 5 webhook retries, the steps about creating an API key and using
+      webhooks, and the ai-pm-os settings block in CLAUDE.md) must survive
+      unchanged.
   - type: llm
     name: report-lists-files
     focus: last_message
