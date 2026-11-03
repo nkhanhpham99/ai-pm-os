@@ -1,5 +1,4 @@
 {
-  "_comment": "Example only. Merge what you want into ~/.claude/settings.json (or a project's .claude/settings.json). 'ask' makes Claude Code stop and confirm before running a matching command. Replace ~/path/to/ai-pm-os with where you cloned the repo. If you installed the plugins with /plugin install, you do not need the hooks block.",
   "permissions": {
     "ask": [
       "Bash(git push*)",
