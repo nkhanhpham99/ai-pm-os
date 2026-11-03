@@ -17,6 +17,7 @@ Rules for every entry:
 | 002 | [Does my agent actually verify before saying "done"?](002-does-my-agent-verify.md) | Hook shipped. Follow-up measurement pending. |
 | 003 | [A fix that checks itself](003-a-fix-that-checks-itself.md) | Kept. |
 | 004 | [Guardrails that match on text misfire](004-guardrails-that-match-text-misfire.md) | Open. Fix not built. |
+| 005 | [Does logging every update keep my docs true?](005-a-fix-that-left-its-warning-behind.md) | Iterating. Two-week count pending. |
 
 ## Entry template
 
