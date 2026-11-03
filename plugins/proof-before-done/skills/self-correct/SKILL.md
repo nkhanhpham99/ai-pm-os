@@ -23,7 +23,7 @@ The failure mode is fixing one copy while stale twins survive. Before editing, s
 ## 4. Correct or supersede each copy
 In every file found:
 - **Rewrite the claim in place**, tagged `(tier, date)`. Do not add a "corrected" line next to the stale one: a fixed problem whose old warning still sits beside a new "fixed" line reads as broken to the next reader.
-- **Keep the history as one line** under a short "Conflicts" note: the date, what the old claim said, and what replaced it. Never silently rewrite history, and never paste the old paragraph back in.
+- **Keep the history as one line** under a short "Conflicts" note **in that same file**: the date, what the old claim said, and what replaced it. Every file you edit gets its own line, including a passing mention in a how-to or a table cell; a history note in one file does not cover the others. Never silently rewrite history, and never paste the old paragraph back in.
 - **Compact as you go.** If the correction shows the item is closed, shrink it to one outcome line (what is true now, the date, the reason that matters). If it is still open, keep its dated context until it closes.
 - Check anything that depends on the fact.
 
@@ -34,9 +34,9 @@ If the wrong claim was Canon, tell the user explicitly, not just in a log line.
 If the claim lived in more than one place, add one line on why it was missed.
 
 ## 7. Verify the sweep (required)
-Re-run the exact step 3 searches after editing. The report must include:
-- `copies: <N found> -> <0 stale remaining>` (only the preserved Conflicts notes may still match)
-- the list of files changed
+Re-run the exact step 3 searches after editing. The report must include, even when the rest of it is plain prose:
+- this line, written literally in this form with your numbers, so a person or a script can check it: `copies: <N found> -> <M stale remaining>` (for example `copies: 3 -> 0`; only the preserved Conflicts lines may still match)
+- the list of files changed, each with whether it got its Conflicts line
 
 If any stale copy survives, fix it and re-run. If a location could not be searched, report `not verified: <location>`, never "clean".
 

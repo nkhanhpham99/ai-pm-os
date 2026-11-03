@@ -10,3 +10,5 @@
 
 - **Decision:** Keep. The verify step is required, not optional.
 - **Next:** An automated eval that plants one stale claim in several files and checks the skill fixes every copy and reports `N -> 0`. It will get its own entry when it has run.
+
+**Update 2026-11-03:** the eval ran. It does not pass yet; see [lab 006](006-does-self-correct-pass-its-own-eval.md).
