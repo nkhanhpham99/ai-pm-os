@@ -1,0 +1,57 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Claude Code CLI
+        run: npm i -g @anthropic-ai/claude-code
+
+      - name: Validate marketplace and every plugin (strict)
+        run: |
+          set -e
+          claude plugin validate ./ --strict
+          for p in plugins/*; do
+            claude plugin validate "$p" --strict
+          done
+
+      - name: Unit tests (one run per tests directory)
+        run: |
+          set -e
+          python3 -m unittest discover -s tests
+          for d in plugins/*/tests; do
+            [ -d "$d" ] || continue
+            python3 -m unittest discover -s "$d"
+          done
+
+      - name: Privacy lint tests
+        run: bash tests/test_privacy_lint.sh
+
+      - name: Skill checks (frontmatter, routine contract)
+        run: python3 scripts/check_skills.py --routine
+
+      - name: Privacy lint (generic patterns only, no deny file in CI)
+        run: bash scripts/privacy-lint.sh
+
+      - name: Markdown link check
+        run: python3 scripts/check_links.py
+
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

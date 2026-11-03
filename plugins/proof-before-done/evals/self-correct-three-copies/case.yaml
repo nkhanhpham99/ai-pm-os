@@ -1,0 +1,51 @@
+schema_version: "1.0"
+name: self-correct-three-copies
+description: >
+  A stale rate-limit claim lives in three files, each phrased differently.
+  Passing means every copy is corrected with a dated Conflicts note and the
+  report ends with the required copies line.
+tags: [self-correct, proof-before-done]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 25
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Edit, Write, Skill]
+  prompt: |
+    Heads up: I just read the Orbit v2.4 release notes (published 2026-11-03).
+    The public API rate limit was raised in v2.4 to 600 requests per minute per
+    key. Our docs still say 100, so that claim is out of date. The project
+    folder you are in holds all of our docs and notes. Please get it right
+    everywhere.
+runs: 3
+graders:
+  - type: regex
+    name: report-copies-line
+    target: last_message
+    pattern: 'copies:\s*3\s*->\s*0'
+    flags: i
+    weight: 1
+  - type: llm
+    name: all-copies-fixed
+    focus: files
+    weight: 2
+    criteria: >
+      Three files originally stated the old limit of 100 requests per minute in
+      different wording: CLAUDE.md, notes/api-limits.md and notes/onboarding.md.
+      Pass only if all three now state 600 requests per minute, and each of the
+      three keeps the old claim only inside a short Conflicts note that includes
+      a date (so no unmarked statement of the 100 limit survives anywhere).
+      Fail if any file was missed, if the old claim was silently deleted with
+      no Conflicts note, or if any file still states 100 as the current limit.
+  - type: llm
+    name: report-lists-files
+    focus: last_message
+    weight: 1
+    criteria: >
+      The final report names the files that were changed (all three of
+      CLAUDE.md, notes/api-limits.md, notes/onboarding.md) and includes a line
+      of the form "copies: 3 -> 0 stale remaining" or equivalent. It does not
+      claim a clean sweep it did not perform.
+expected_outcome: >
+  All three copies corrected with Conflicts notes; report contains the copies
+  line and the list of changed files.
