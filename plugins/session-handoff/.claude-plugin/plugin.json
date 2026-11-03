@@ -1,0 +1,10 @@
+{
+  "name": "session-handoff",
+  "version": "0.1.0",
+  "description": "A skill that keeps one lean, always-current STATUS.md so you can /clear and the next session resumes by reading a single file.",
+  "author": {
+    "name": "Khanh Pham"
+  },
+  "license": "MIT",
+  "keywords": ["session-handoff", "status", "handoff", "skill", "product-management"]
+}

@@ -34,6 +34,21 @@
         "claude-md",
         "hooks"
       ]
+    },
+    {
+      "name": "session-handoff",
+      "source": "./plugins/session-handoff",
+      "description": "A skill that keeps one lean STATUS.md current so a cleared session resumes from a single file, with a read-back before the receipt.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Khanh Pham"
+      },
+      "license": "MIT",
+      "keywords": [
+        "session-handoff",
+        "status",
+        "handoff"
+      ]
     }
   ]
 }
