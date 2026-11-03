@@ -1,0 +1,10 @@
+{
+  "name": "pm-routines",
+  "version": "0.1.0",
+  "description": "Three scheduled routines that interview you before their first run, then tighten themselves over time: market-sweep (social, community and ad platforms), weekly-metrics-review (KR scoreboard plus an accountability audit) and watch-until (tell me once when X becomes true).",
+  "author": {
+    "name": "Khanh Pham"
+  },
+  "license": "MIT",
+  "keywords": ["routines", "scheduled-tasks", "market-sweep", "metrics-review", "watcher"]
+}

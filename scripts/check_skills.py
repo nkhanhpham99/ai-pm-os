@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """check_skills.py - validate every plugins/*/skills/*/SKILL.md.
 
-Usage: python3 scripts/check_skills.py [ROOT]
+Usage: python3 scripts/check_skills.py [--routine] [ROOT]
 
 Exit 0 if every skill passes; otherwise exit 1 and print "path: reason" for each
 problem. Frontmatter is read with a minimal YAML-subset reader (stdlib only):
@@ -13,6 +13,14 @@ Rules (portable Agent Skills subset):
     metadata, allowed-tools
   - name equals the folder name (lowercase letters, digits, hyphens)
   - description present, starts with "Use when", at most 1536 characters
+
+Routine rule (skills under plugins/pm-routines/skills/):
+  - the body's level-2 ("## ") sections are exactly, in order: When to use,
+    Defaults, Modes, Readiness check, Run, Honest summary, Guardrails.
+    A heading may carry a suffix after the name, e.g. "## Modes (`setup` / ...)".
+    "###" subsections are free; headings inside ``` fences are ignored.
+  - Applied in the default mode too, so CI catches drift. --routine checks only
+    the routine skills (frontmatter + sections) and fails if none are found.
 """
 import glob
 import os
@@ -23,6 +31,18 @@ ALLOWED_KEYS = {"name", "description", "license", "compatibility", "metadata", "
 MAX_DESCRIPTION = 1536
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 KEY_RE = re.compile(r"^([A-Za-z0-9_-]+):(?:\s+(.*)|\s*)$")
+ROUTINE_PLUGIN = "pm-routines"
+ROUTINE_SECTIONS = [
+    "When to use",
+    "Defaults",
+    "Modes",
+    "Readiness check",
+    "Run",
+    "Honest summary",
+    "Guardrails",
+]
+FENCE_RE = re.compile(r"^\s*(```|~~~)")
+H2_RE = re.compile(r"^##\s+(.+?)\s*#*\s*$")
 
 
 class FrontmatterError(Exception):
@@ -198,17 +218,101 @@ def check_skill(path):
     return problems
 
 
+def _h2_headings(text):
+    """Level-2 heading texts in the body (after frontmatter), outside code fences."""
+    lines = text.splitlines()
+    start = 0
+    if lines and lines[0].strip() == "---":
+        for i in range(1, len(lines)):
+            if lines[i].strip() == "---":
+                start = i + 1
+                break
+    out, in_fence = [], False
+    for ln in lines[start:]:
+        if FENCE_RE.match(ln):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        m = H2_RE.match(ln)
+        if m and not ln.startswith("###"):
+            out.append(m.group(1))
+    return out
+
+
+def _section_name(heading):
+    """Map a heading to its routine section name, or None if it is not one."""
+    h = heading.strip().lower()
+    for name in ROUTINE_SECTIONS:
+        n = name.lower()
+        if h == n or (h.startswith(n) and not h[len(n)].isalnum()):
+            return name
+    return None
+
+
+def check_routine(path):
+    """Return problems with a routine SKILL.md's section structure."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+    except (OSError, UnicodeDecodeError) as exc:
+        return [f"cannot read file: {exc}"]
+    problems = []
+    found = []
+    for heading in _h2_headings(text):
+        name = _section_name(heading)
+        if name is None:
+            problems.append(
+                f"unexpected routine section '## {heading}' (allowed, in order: {', '.join(ROUTINE_SECTIONS)})"
+            )
+        elif name in found:
+            problems.append(f"duplicate routine section '## {name}'")
+        else:
+            found.append(name)
+    for name in ROUTINE_SECTIONS:
+        if name not in found:
+            problems.append(f"missing routine section '## {name}'")
+    present = [n for n in ROUTINE_SECTIONS if n in found]
+    if found != present:
+        problems.append(
+            f"routine sections out of order: found {', '.join(found)}; expected order {', '.join(ROUTINE_SECTIONS)}"
+        )
+    return problems
+
+
+def is_routine(path, root):
+    rel = os.path.relpath(os.path.abspath(path), os.path.abspath(root))
+    parts = rel.split(os.sep)
+    return len(parts) >= 2 and parts[0] == "plugins" and parts[1] == ROUTINE_PLUGIN
+
+
 def main(argv):
-    root = argv[1] if len(argv) > 1 else "."
+    args = argv[1:]
+    routine_only = "--routine" in args
+    args = [a for a in args if a != "--routine"]
+    root = args[0] if args else "."
     pattern = os.path.join(root, "plugins", "*", "skills", "*", "SKILL.md")
     paths = sorted(glob.glob(pattern))
+    if routine_only:
+        paths = [p for p in paths if is_routine(p, root)]
+        if not paths:
+            print(f"check_skills: no routine skills found under plugins/{ROUTINE_PLUGIN}/skills/")
+            return 1
     failed = False
+    routines = 0
     for path in paths:
-        for problem in check_skill(path):
+        problems = check_skill(path)
+        if is_routine(path, root):
+            routines += 1
+            problems += check_routine(path)
+        for problem in problems:
             print(f"{path}: {problem}")
             failed = True
     if not failed:
-        print(f"check_skills: {len(paths)} skill(s) OK")
+        if routine_only:
+            print(f"check_skills: {routines} routine skill(s) OK")
+        else:
+            print(f"check_skills: {len(paths)} skill(s) OK ({routines} routine)")
     return 1 if failed else 0
 
 

@@ -79,6 +79,21 @@
         "prd",
         "decision-log"
       ]
+    },
+    {
+      "name": "pm-routines",
+      "source": "./plugins/pm-routines",
+      "description": "Three routines that interview you first, run from an approved brief, and tune themselves: market-sweep, weekly-metrics-review and watch-until, plus scheduling recipes.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Khanh Pham"
+      },
+      "license": "MIT",
+      "keywords": [
+        "routines",
+        "scheduled-tasks",
+        "market-sweep"
+      ]
     }
   ]
 }

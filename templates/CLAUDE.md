@@ -111,4 +111,7 @@ The skills in this marketplace open with a "Defaults" block. If your `CLAUDE.md`
 - research folder: ./research/
 - decisions file: ./decisions.md
 - PRD folder: ./docs/prd/
+- market-sweep folder: ./market-sweep/
+- metrics review folder: ./metrics-review/
+- watch-until folder: ./watch-until/
 ```

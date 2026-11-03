@@ -20,9 +20,31 @@ def write_skill(root, folder, frontmatter, plugin="demo"):
     return path
 
 
-def run_checker(root):
+ROUTINE_HEADINGS = [
+    "When to use",
+    "Defaults",
+    "Modes",
+    "Readiness check",
+    "Run",
+    "Honest summary",
+    "Guardrails",
+]
+
+
+def write_routine(root, folder, headings, plugin="pm-routines", extra=""):
+    """Write a frontmatter-valid SKILL.md whose body has the given ## headings."""
+    d = os.path.join(root, "plugins", plugin, "skills", folder)
+    os.makedirs(d, exist_ok=True)
+    path = os.path.join(d, "SKILL.md")
+    body = "".join(f"## {h}\nText.\n\n" for h in headings)
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(f"---\nname: {folder}\ndescription: {GOOD_DESC}\n---\n\n# Title\n\n" + body + extra)
+    return path
+
+
+def run_checker(root, *flags):
     proc = subprocess.run(
-        [sys.executable, "-I", SCRIPT, root],
+        [sys.executable, "-I", SCRIPT, *flags, root],
         capture_output=True,
         text=True,
     )
@@ -134,6 +156,81 @@ class CheckSkillsTest(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertIn(bad1, out)
         self.assertIn(bad2, out)
+
+
+class RoutineCheckTest(unittest.TestCase):
+    """--routine: skills under plugins/pm-routines/ must have the 7 routine sections, in order."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = self._tmp.name
+        self.addCleanup(self._tmp.cleanup)
+
+    def test_routine_valid_passes(self):
+        write_routine(self.root, "demo-routine", ROUTINE_HEADINGS)
+        rc, out = run_checker(self.root, "--routine")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("routine", out)
+
+    def test_routine_missing_heading_fails(self):
+        headings = [h for h in ROUTINE_HEADINGS if h != "Readiness check"]
+        path = write_routine(self.root, "demo-routine", headings)
+        rc, out = run_checker(self.root, "--routine")
+        self.assertEqual(rc, 1, out)
+        self.assertIn(path, out)
+        self.assertIn("Readiness check", out)
+
+    def test_routine_out_of_order_fails(self):
+        headings = list(ROUTINE_HEADINGS)
+        headings[4], headings[5] = headings[5], headings[4]
+        path = write_routine(self.root, "demo-routine", headings)
+        rc, out = run_checker(self.root, "--routine")
+        self.assertEqual(rc, 1, out)
+        self.assertIn(path, out)
+        self.assertIn("order", out)
+
+    def test_routine_extra_section_fails(self):
+        headings = ROUTINE_HEADINGS[:3] + ["Workflow"] + ROUTINE_HEADINGS[3:]
+        path = write_routine(self.root, "demo-routine", headings)
+        rc, out = run_checker(self.root, "--routine")
+        self.assertEqual(rc, 1, out)
+        self.assertIn(path, out)
+        self.assertIn("Workflow", out)
+
+    def test_routine_heading_suffix_and_subsections_pass(self):
+        headings = list(ROUTINE_HEADINGS)
+        headings[2] = "Modes (`setup` / `run` / `learn` / `tune`)"
+        extra = "### A subsection is fine\n\n```markdown\n## Not a real heading\n```\n"
+        write_routine(self.root, "demo-routine", headings, extra=extra)
+        rc, out = run_checker(self.root, "--routine")
+        self.assertEqual(rc, 0, out)
+
+    def test_routine_check_runs_in_default_mode(self):
+        path = write_routine(self.root, "demo-routine", ROUTINE_HEADINGS[:-1])
+        rc, out = run_checker(self.root)
+        self.assertEqual(rc, 1, out)
+        self.assertIn(path, out)
+        self.assertIn("Guardrails", out)
+
+    def test_non_routine_plugin_is_not_held_to_routine_sections(self):
+        write_routine(self.root, "demo-skill", ["Workflow"], plugin="demo")
+        rc, out = run_checker(self.root, "--routine")
+        # the only skill is outside pm-routines, so --routine has nothing to check
+        self.assertEqual(rc, 1, out)
+        self.assertIn("no routine skills", out)
+        rc, out = run_checker(self.root)
+        self.assertEqual(rc, 0, out)
+
+    def test_routine_flag_also_checks_frontmatter(self):
+        d = os.path.join(self.root, "plugins", "pm-routines", "skills", "demo-routine")
+        os.makedirs(d)
+        path = os.path.join(d, "SKILL.md")
+        body = "".join(f"## {h}\nText.\n\n" for h in ROUTINE_HEADINGS)
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write("---\nname: demo-routine\ndescription: Runs a thing.\n---\n\n" + body)
+        rc, out = run_checker(self.root, "--routine")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("Use when", out)
 
 
 if __name__ == "__main__":
