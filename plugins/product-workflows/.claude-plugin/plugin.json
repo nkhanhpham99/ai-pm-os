@@ -1,0 +1,10 @@
+{
+  "name": "product-workflows",
+  "version": "0.1.0",
+  "description": "Three skills for a product manager's core loop: evidence-first market research, a PRD with a clean shareable copy, and a decision ledger that logs bets and reviews them without inventing answers.",
+  "author": {
+    "name": "Khanh Pham"
+  },
+  "license": "MIT",
+  "keywords": ["market-research", "prd", "decision-log", "skill", "product-management"]
+}

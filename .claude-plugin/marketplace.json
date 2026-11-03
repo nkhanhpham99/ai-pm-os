@@ -64,6 +64,21 @@
         "learning",
         "notes"
       ]
+    },
+    {
+      "name": "product-workflows",
+      "source": "./plugins/product-workflows",
+      "description": "Three skills: market-research (sourced, verified briefs), prd (grounded requirements with a clean shareable copy), and decision-ledger (log bets, review them, never invent an answer).",
+      "version": "0.1.0",
+      "author": {
+        "name": "Khanh Pham"
+      },
+      "license": "MIT",
+      "keywords": [
+        "market-research",
+        "prd",
+        "decision-log"
+      ]
     }
   ]
 }

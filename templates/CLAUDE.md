@@ -108,4 +108,7 @@ The skills in this marketplace open with a "Defaults" block. If your `CLAUDE.md`
 - status file: STATUS.md
 - teammate ask-doc name: <NAME>-ASKS.md
 - notes folder: <optional folder self-correct also sweeps>
+- research folder: ./research/
+- decisions file: ./decisions.md
+- PRD folder: ./docs/prd/
 ```
