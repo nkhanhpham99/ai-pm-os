@@ -10,7 +10,7 @@ license: MIT
 Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md before using these.
 - **PRD folder:** `./docs/prd/` (setting name: `PRD folder`). The working copy is `<slug>.md`; the shareable copy is `<slug>.shareable.md` in the same folder. Create the folder if it does not exist. Quote paths.
 - **Decisions file:** `./decisions.md` (setting name: `decisions file`). Read it in the pre-flight when it exists.
-- **Priority tiers:** P0 = the one or few broad goals the project must deliver, not granular. P1 = next after the minimum viable work. P2 = circle back later. The tiers are fixed in this version. They are a different scale from the decision ledger's `Priority` field (P0 push hard, P1 normal, P2 easy-iterate), so never mix the two.
+- **Priority tiers:** P0 = the one or few broad goals the project must deliver, not granular. P1 = next after the minimum viable work. P2 = circle back later. The tiers are fixed. They are a different scale from the decision ledger's `Priority` field (P0 push hard, P1 normal, P2 easy-iterate), so never mix the two.
 - **Date format:** `YYYY-MM-DD`. Use the date from the environment or conversation; if neither gives one, run `date +%F`. Never guess.
 - If the settings rename a folder or file, treat every mention below as that path.
 - Storage is markdown. If the user wants the PRD in Notion, read [using Notion](references/using-notion.md) (untested).
@@ -89,10 +89,10 @@ Making the shareable copy:
 4. **Run the grep check on the shareable file. It must return nothing:**
 
 ```bash
-grep -nEi '/Use[r]s/|/hom[e]/|(^|[^[:alnum:]])~/|\$HOME|/private/|/Volumes/|/tmp/|\.claude/|[A-Za-z]:\\|\.jsonl|session[ _-]?(id|[0-9a-f]{6,})|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "<PRD folder>/<slug>.shareable.md"
+grep -nEi '/Use[r]s/|/hom[e]/|(^|[^[:alnum:]])~/|\$HOME|/private/|/Volumes/|/tmp/|\.claude/|[A-Za-z]:\\|\.jsonl|session[ _-]?(id|[0-9][0-9a-f]{5,}|[a-f][0-9][0-9a-f]{4,}|[a-f]{2}[0-9][0-9a-f]{3,}|[a-f]{3}[0-9][0-9a-f]{2,}|[a-f]{4}[0-9][0-9a-f]+|[a-f]{5,}[0-9])|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "<PRD folder>/<slug>.shareable.md"
 ```
 
-   It catches local paths (including `~/` after punctuation, `$HOME`, `/private/`, `/Volumes/`, `/tmp/`, `.claude/`), transcript files, session ids (including short and hyphenated ones) and raw UUIDs. Fix every hit and run it again until it prints nothing. Then read the file once for shorthand and private context a pattern cannot catch. If you cannot run the check, say "not verified: <reason>" and do not call the copy shareable.
+   It catches local paths (including `~/` after punctuation, `$HOME`, `/private/`, `/Volumes/`, `/tmp/`, `.claude/`), transcript files, session ids (including short and hyphenated ones, which must contain a digit so that ordinary words such as "session feedback" do not fire) and raw UUIDs. Fix every hit and run it again until it prints nothing. Then read the file once for shorthand and private context a pattern cannot catch. If you cannot run the check, say "not verified: <reason>" and do not call the copy shareable.
 
 **Read each file back from disk** after writing and confirm the sections you wrote are present: the Status line, the metrics table with a reason for every target, the open questions, and the date. If a read-back does not match, fix it and read again. If you still cannot confirm, report "not verified: <reason>".
 

@@ -64,7 +64,7 @@
 
 ### Priority tiers (P0, P1, P2)
 
-Broad tiers above the granular requirements. Default definitions, which the user may override:
+Broad tiers above the granular requirements. The tiers are fixed:
 - **P0:** the main goal the project must directly deliver. Not granular: one or a few major goals.
 - **P1:** what to do next once the minimum viable work is complete.
 - **P2:** should-have, to circle back to later.
