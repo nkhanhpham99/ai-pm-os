@@ -42,7 +42,7 @@ To change where entries are written, add an `## ai-pm-os settings` section to yo
 
 ```markdown
 ## ai-pm-os settings
-- knowledge-base folder: <PATH-TO-YOUR-KNOWLEDGE-BASE>
+- knowledge-base folder: ~/knowledge/
 ```
 
 The default is `~/knowledge/`. The skill reads the setting before using the default.

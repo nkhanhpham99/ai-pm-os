@@ -19,7 +19,7 @@ SESSION CONTEXT (what the user was working on when this came up; this becomes th
 constraints, which option won and why):
 <paste it. Anchor to the user's current projects (from CLAUDE.md / cwd).>
 
-READ FIRST: <absolute path of this plugin's skills/knowledge-base/SKILL.md>, and the
+READ FIRST: <this skill's base directory (shown when the skill loads) + SKILL.md>, and the
 templates it links in references/entry-templates.md and references/meta-pages.md.
 Follow "What the capture does" in SKILL.md exactly.
 
@@ -57,4 +57,4 @@ terms added, current entry count, and for every file either "read back: verified
 ## Notes for the dispatcher
 - Pass the explanation verbatim. A summary loses the exact analogies and examples that make the entry good.
 - If the session context is thin, say so in the prompt rather than padding it. The agent will then write "In my world" as future-work pointers instead of inventing a connection.
-- When the background agent finishes, relay its report only if it says "not verified" or reports a problem. Otherwise a verified capture needs no further message to the user.
+- When the background agent finishes, read its report. If it failed, was denied a write, returned nothing, or omitted a "read back: verified" line for any file, tell the user "not verified: <reason>". Otherwise stay silent: a verified capture needs no further message to the user.

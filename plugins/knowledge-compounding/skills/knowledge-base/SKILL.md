@@ -1,6 +1,6 @@
 ---
 name: knowledge-base
-description: Use when the user asks an explanation-style question that teaches a concept, term, workflow, buzzword, business idea, or piece of infrastructure ("explain", "explain in plain English", "what is X", "I don't understand", "why does X work this way", "explain with full context", "explain with the broader picture"), or says "add this to my knowledge base", "save this explanation", or "what do I already have on X". Also use for a comparison or tradeoff question ("X vs Y", "pros and cons", "which should I use") only when the user asks to save it, or asks for the tradeoff "with full context". Also use when the user asks to rebuild the knowledge base index, glossary, or map.
+description: Use when the user asks an explanation-style question that teaches a concept, term, workflow, buzzword, business idea, or piece of infrastructure ("explain", "explain in plain English", "what is X", "I don't understand", "why is X built this way" when the answer teaches a concept, "explain with full context", "explain with the broader picture"), or says "add this to my knowledge base", "save this explanation", or "what do I already have on X". Also use when the user asks to save a comparison or tradeoff, or asks for a tradeoff "with full context". Plain comparison questions do not trigger it. Also use when the user asks to rebuild the knowledge base index, glossary, or map.
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 ## Defaults
 Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md before using these.
-- **Knowledge-base folder:** `~/knowledge/` (setting name: `knowledge-base folder`; the template's `knowledge-base-path` key means the same thing). Expand `~` to the real home path before running shell commands, and quote the path, since it may contain spaces. Create the folder if it does not exist.
+- **Knowledge-base folder:** `~/knowledge/` (setting name: `knowledge-base folder`). Expand `~` to the real home path before running shell commands, and quote the path, since it may contain spaces. Create the folder if it does not exist.
 - **Entry format:** plain markdown with YAML frontmatter, `[[wiki-links]]`, and mermaid diagrams. It also works unchanged in Obsidian, which is compatible but not required.
 - **Date format:** `YYYY-MM-DD`. Use the date from the environment or conversation; if neither gives one, run `date +%F`. Never guess.
 - If the settings rename the folder, treat every mention of the folder below as that path.
@@ -30,13 +30,13 @@ The result is a mind map, not a dictionary. Every entry zooms out from the speci
 Answer the question exactly as the session naturally would. Do not restructure the answer around this skill, do not announce capturing mid-answer, and do not make the user wait. If they asked for plain English, lead with the beginner-level framing before any jargon.
 
 ### Phase 2: capture in the background
-After the answer is delivered, dispatch ONE background agent (Agent tool, `run_in_background: true`, general-purpose) to write the entry. Say so in one short line ("Adding this to your knowledge base in the background") and carry on with whatever the session was doing. Capturing never interrupts the work.
+After the answer is delivered, dispatch ONE background agent (Agent tool, `run_in_background: true`, general-purpose) to write the entry. Say so in one short line ("Adding this to your knowledge base in the background") and carry on with whatever the session was doing. Capturing never interrupts the work. When the background agent finishes, read its report. If it failed, was denied a write, returned nothing, or omitted a "read back: verified" line for any file, tell the user "not verified: <reason>". Otherwise stay silent.
 
 Build the agent's prompt from [the capture prompt](references/capture-prompt.md). It must be self-contained, because the agent cannot see the session. Fill in:
 1. **The concept name(s).** Usually one. If the answer taught several distinct concepts, list each, and the agent writes one file per concept, cross-linked.
 2. **The full explanation just given.** Paste it. Do not summarize it away.
 3. **Session context.** What project or task was active when the question came up. Anchor to the user's current projects (from CLAUDE.md / cwd). Only you can supply this, and it becomes the entry's "In my world" section. For a saved comparison, pass the full case: the project, the scale, the constraints, which option won and why.
-4. **The folder path** (resolved from the settings), and the path of this plugin's reference files so the agent reads the templates.
+4. **The folder path** (resolved from the settings), and the path of this skill's reference files so the agent reads the templates. Resolve that path as this skill's base directory (shown when the skill loads) plus `references/`.
 
 If the Agent tool is unavailable, do the capture inline at the end of your turn using the same steps. It is fine to be brief on polish, but never skip the index update, the relationship linking, or the read-back.
 
@@ -62,6 +62,7 @@ If the Agent tool is unavailable, do the capture inline at the end of your turn 
 
 ## Anti-patterns
 - Changing how the answer is written, or announcing the capture before the answer is delivered.
+- Capturing a comparison entry the user did not ask to save.
 - Capturing a one-line factual lookup. Only answers that teach something are worth an entry.
 - Writing a long explanation into a shared file instead of the concept's own page.
 - Adding an entry without updating the index, glossary, and map.

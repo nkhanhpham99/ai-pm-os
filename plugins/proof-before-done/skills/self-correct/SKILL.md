@@ -8,7 +8,7 @@ license: MIT
 
 ## Defaults
 Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md before using these.
-- **Knowledge locations to sweep:** the project `CLAUDE.md`, `~/.claude/CLAUDE.md`, the Claude memory directory, `~/.claude/agents/`, `~/.claude/skills/`, and an optional notes folder if the settings name one.
+- **Knowledge locations to sweep:** the project `CLAUDE.md`, `~/.claude/CLAUDE.md`, the Claude memory directory, `~/.claude/agents/`, `~/.claude/skills/`, and an optional notes folder if the settings name one (setting name: `notes folder`).
 - **Validity tiers:** V1 canon (deployed or team-approved fact), V2 provisional (in-progress local knowledge), V3 working (experiments, timelines). Definitions live in `templates/CLAUDE.md`. Latest wins within a tier.
 
 ## 1. Pin the correction

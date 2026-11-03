@@ -104,6 +104,8 @@ The skills in this marketplace open with a "Defaults" block. If your `CLAUDE.md`
 
 ```markdown
 ## ai-pm-os settings
-- knowledge-base-path: <PATH-TO-KNOWLEDGE-BASE>
-- handoff-file: STATUS.md
+- knowledge-base folder: ~/knowledge/
+- status file: STATUS.md
+- teammate ask-doc name: <NAME>-ASKS.md
+- notes folder: <optional folder self-correct also sweeps>
 ```
