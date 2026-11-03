@@ -27,7 +27,7 @@ The user asks for a handoff, a wrap-up, a status update, or to record where thin
 1. **Review the full conversation**, not just the last few turns.
 2. **Gather session state.** You already know it, so do not audit the filesystem or run broad searches. Collect what got done, what is in flight, what is queued, decisions made, open questions, teammate asks, and any deep-detail docs written. For live work, also collect background processes started with `run_in_background` (the shell IDs matter) and any dev server, URL, or artifact the work runs at.
 3. **Locate STATUS.md** at the root of the project or work folder. If none exists and the user asked for a handoff, create one using the structure below. If none exists and you are invoking this proactively (nobody asked), do not create a file: offer it in one line ("Want me to start a STATUS.md here?") and continue. If one exists, **merge into it**: match its headings, and do not restructure or overwrite it.
-4. **Update it lean and side-by-side.** Move finished items into DONE as one-liners. Refresh CURRENT, NEXT, and CHECK / ASK. Keep Standing gotchas and Quick start accurate. Stamp "Last updated" with today's date. Use the date from the environment or conversation; if neither gives one, run `date +%F` or ask. Never guess. Edit the file directly, since it is the user's own status doc.
+4. **Update it lean and side-by-side.** Compact as you go (hard rule 2): move finished items into DONE as one-liners, fold dated NEXT bullets that have since closed into DONE, and rewrite a fixed problem's old line instead of adding a "fixed" line beside it. Before carrying a BLOCKED or waiting item forward, check its premise (hard rule 14). Refresh CURRENT, NEXT, and CHECK / ASK. Keep Standing gotchas and Quick start accurate. Stamp "Last updated" with today's date. Use the date from the environment or conversation; if neither gives one, run `date +%F` or ask. Never guess. Edit the file directly, since it is the user's own status doc.
 5. **Route teammate asks to a separate doc, only when needed** (see below).
 6. **Read it back (required).** Re-read STATUS.md from disk after writing and confirm the sections you changed are actually there: the new "Last updated" date, the items you moved or added, and the deep-doc paths. If the file was not written or the read-back does not match, fix it and re-read. If you still cannot confirm it, say "not verified" in the receipt and say why. Never imply the file landed.
 7. **Give a short chat receipt and a copy-paste primer**, not the full handoff (see below).
@@ -99,7 +99,7 @@ The primer must name the **absolute STATUS.md path** and tell the agent to read 
 
 ## Hard rules
 1. **File first, not chat first.** Full state goes in STATUS.md. Chat is the short receipt. Never paste the whole board into chat.
-2. **Keep it lean, never re-sprawl.** DONE items are one-liners. Deep detail lives in notes, research, or plan docs, not STATUS.md. Do not append raw logs.
+2. **Keep it lean, never re-sprawl.** Every update compacts. A closed item becomes a one-line DONE entry: the outcome, the date, and the reason that matters. An open item in CURRENT, NEXT, or BLOCKED keeps its dated context until it closes, then shrinks the same way. When something gets fixed, rewrite the old problem line rather than adding a "fixed" line beside it. Deep detail lives in notes, research, or plan docs, not STATUS.md. Do not append raw logs.
 3. **Side-by-side updates.** Update at every milestone, new pending item, or new ask, not only at wrap-up.
 4. **Every deep thread links its doc.** Any CURRENT, NEXT, or BLOCKED item with more than a line of real context must name its deep doc by absolute path. "Read STATUS.md and continue" only delivers full context if every thread links to its depth.
 5. **Record the why on decisions.** When an item settles a choice, keep the rationale inline (`chose X over Y, because Z`) so the next session does not reopen it. Capture ruled-out approaches under Standing gotchas, in "Tried & rejected".
@@ -111,6 +111,7 @@ The primer must name the **absolute STATUS.md path** and tell the agent to read 
 11. **Absolute paths always** inside STATUS.md, never `~` or relative paths.
 12. **Background and live state is load-bearing.** Background shell IDs plus the kill command, dev ports, and live URLs go in Quick start, or the next agent cannot find them.
 13. **Stay in scope.** This skill writes only STATUS.md (and an ask-doc when needed); it does not touch other notes or memory unless the user asks.
+14. **Check the premise before carrying it forward.** A BLOCKED or "waiting on someone" line from an earlier STATUS.md is the thing being checked, not the evidence. Before keeping it, make one targeted check of the claim it rests on against the real source: the code or config that actually runs, the latest run, the live record. If the claim no longer holds, close the item. If you cannot check it, keep it marked "not verified" instead of restating it as fact.
 
 ## Anti-patterns
 - Dumping the full board into chat alongside the file.
@@ -121,3 +122,5 @@ The primer must name the **absolute STATUS.md path** and tell the agent to read 
 - Relative paths or `~` inside STATUS.md.
 - Making up the "Last updated" date. Use the date from the environment or conversation, or `date +%F`.
 - Reporting "updated" without having re-read the file.
+- Adding a "fixed" line next to an old problem line instead of rewriting it, so the stale warning survives.
+- Carrying a BLOCKED or waiting item into the next session without checking that it is still true.

@@ -80,18 +80,19 @@ Walks the entries that need attention, one question at a time, and records the a
    - `Review by` is a real date earlier than today and Status is not `closed` or `superseded`.
    Entries with Review by set to `needs input` or `none set` are included only through the Status rule.
 3. **Show a short list** first: id, title, and why it is up (which field is missing, or "review date passed on <date>"). Then walk them one at a time. Ask the user which to start with if there are many.
-4. **Resolve each open question.** For each entry, ask the user directly what the open field should be: Outcome, Baseline, Target, Metric, Review by, Owner, or whatever is missing. Then:
+4. **Check the premise first.** An old entry is the thing being checked, not the evidence. Where you can, make one targeted check of the claim it rests on against the real source: the shipped code or config, the latest metric reading, the live record. Show the user what you found, with its source and date, before asking. If you cannot check it, say "not verified" for that entry. The finding only informs the question: never write it into the entry as the user's answer.
+5. **Resolve each open question.** For each entry, ask the user directly what the open field should be: Outcome, Baseline, Target, Metric, Review by, Owner, or whatever is missing. Then:
    - Write **only** what the user confirmed, **verbatim** where it is a statement (Reasoning, Outcome, Lesson). Do not tidy it.
    - Once they confirm a number, record where it came from in `Provenance`. A number they could not source is recorded as assumed.
    - If they do not know, leave the field as `needs input` and keep Status `needs input`.
    - Move Status forward: `open` once it has what it needs to be tracked, `closed` once the outcome is known.
    - If the review date passed and the outcome is not known, ask whether to set a new Review by date or leave it. Never move a date without being told.
-5. **Offer to close** any entry the user considers done. On close:
+6. **Offer to close** any entry the user considers done. On close:
    1. Ask for the **Outcome**: whether the bet held, did not hold, or partly held, in their words, with the final figure if there is one.
    2. Ask the user to confirm the exact one-line **Lesson** wording before writing it. Do not paraphrase it for them.
    3. Set Status to `closed`.
    4. If a lesson changes a standing rule, offer to add it to the project's CLAUDE.md or notes, and only do so if they say yes.
-6. **Edit in place.** Change only the labelled lines of the entries being reviewed, using the Edit tool. Never rewrite the whole file.
+7. **Edit in place.** Change only the labelled lines of the entries being reviewed, using the Edit tool. Never rewrite the whole file. Do not compact entries the way a status doc compacts: each entry is a complete record that other skills read by label, so a closed entry keeps every field.
 
 **Read it back (after each write, and again before the recap).** Re-read `decisions.md` from disk and confirm each field you wrote now shows the user's answer. Anything that did not land is reported as "not verified: <reason>". End with a short recap: which entries were updated (and which fields), which were closed, and which still need input (and exactly what is missing on each).
 

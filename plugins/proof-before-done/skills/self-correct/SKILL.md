@@ -18,10 +18,14 @@ State the **wrong claim** (verbatim), the **correct claim**, and the **evidence*
 Clear technical correction: apply it (steps 3 to 7). Ambiguous or strategic: surface it with the evidence, do not decide silently.
 
 ## 3. Sweep for every copy
-The failure mode is fixing one copy while stale twins survive. Before editing, search every location above with several phrasings of the claim. Agent and skill files restate facts too. Build the full list first.
+The failure mode is fixing one copy while stale twins survive. Before editing, search every location above with several phrasings of the claim, including the old wording of the problem itself ("waiting on", "not yet", "blocked by", "the cap stops it"). Agent and skill files restate facts too. Build the full list first.
 
 ## 4. Correct or supersede each copy
-In every file found: fix the claim, tag it `(tier, date)`, and keep the old claim under a short "Conflicts" note with the date. Never silently rewrite history. Check anything that depends on the fact.
+In every file found:
+- **Rewrite the claim in place**, tagged `(tier, date)`. Do not add a "corrected" line next to the stale one: a fixed problem whose old warning still sits beside a new "fixed" line reads as broken to the next reader.
+- **Keep the history as one line** under a short "Conflicts" note: the date, what the old claim said, and what replaced it. Never silently rewrite history, and never paste the old paragraph back in.
+- **Compact as you go.** If the correction shows the item is closed, shrink it to one outcome line (what is true now, the date, the reason that matters). If it is still open, keep its dated context until it closes.
+- Check anything that depends on the fact.
 
 ## 5. Flag wrong Canon loudly
 If the wrong claim was Canon, tell the user explicitly, not just in a log line.

@@ -17,5 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `pm-routines` plugin: the `market-sweep`, `weekly-metrics-review` and `watch-until` routines, plus `SCHEDULING.md`.
 - `templates/CLAUDE.md` (the eight operating rules and the settings keys) and `templates/settings.example.json`.
 - Privacy lint, skill checker, markdown link checker, and CI (strict validation, unit tests, lint, link check, gitleaks).
+- Rewrite-in-place, compaction and premise-check rules across `self-correct`, `session-handoff`, `decision-ledger` and the operating rules: a fix rewrites the old line instead of adding one beside it, closed items shrink to one line while open ones keep their history, and a line in an old doc is checked against the real source before it is carried forward.
 - Eval case `self-correct-three-copies`.
 - README, lab notebook with entries 001 to 004, `docs/how-i-work.md`, contributing guide and issue templates.

@@ -10,11 +10,11 @@ Agents are confidently wrong, they forget between sessions, and they say "done" 
 
 Every claim you rely on belongs to one of three tiers. Answer from the highest tier that can answer, and never present a lower tier as a higher one.
 
-- **Canon.** Technical or official facts, and anything deployed: infrastructure, schemas, paths, rules, shipped behaviour. Also any decision approved by the whole team. This is primary truth.
+- **Canon.** Technical or official facts, and anything deployed: infrastructure, schemas, paths, rules, shipped behavior. Also any decision approved by the whole team. This is primary truth.
 - **Provisional.** In-progress local knowledge: things being built but not yet shipped. Trust it only when Canon has no answer. It becomes Canon once it ships and you have checked it against the real source.
 - **Working.** Ongoing decisions, experiments, plans, timelines, campaign work. This is not truth and it ages quickly. Retrieve it last. It becomes Canon only if the finding is technical or the team has approved it.
 
-Retrieve in order: Canon, then Provisional, then Working. Before assuming anything technical, check Canon. Do not guess.
+Retrieve in order: Canon, then Provisional, then Working. Before assuming anything technical, check Canon. Do not guess. A line in a doc, a note or an earlier session is the thing being checked, not the evidence: before turning it into a task or carrying it forward, check it against the real source, or mark it "not verified".
 
 *Why:* an agent that treats a plan as a fact, or a draft as the deployed system, will build on sand and sound sure about it.
 
@@ -36,9 +36,10 @@ Never state a metric, date, id, path or outcome you cannot source. If you do not
 
 When you find a wrong path, a bug, or an earlier finding that is no longer true:
 
-1. Fix the canonical record.
-2. Keep the old claim under a **Conflicts** note, with the date, so the history stays honest.
+1. Rewrite the canonical record in place. Do not add a "fixed" line beside the old one: the old warning would survive next to it.
+2. Keep the old claim as one line under a **Conflicts** note (the date, what it said, what replaced it), so the history stays honest without growing.
 3. Update everything cross-linked to it, and say so loudly if it was Canon.
+4. Keep records compact. A closed item shrinks to one line: the outcome, the date, the reason that matters. An open item keeps its dated history until it closes.
 
 A correction from a teammate or a code-review finding counts as Canon. Update the record now rather than later. The `self-correct` skill does this sweep: it finds every copy of the stale claim and fixes all of them.
 
