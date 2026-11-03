@@ -114,7 +114,7 @@ The eight rules behind these plugins are in [`templates/CLAUDE.md`](templates/CL
 Khanh Pham is an AI product manager. They built this setup while shipping a consumer app, and keep it in public as a working lab: it changes when a measurement says it should.
 
 - GitHub: [nkhanhpham99](https://github.com/nkhanhpham99)
-- LinkedIn: <!-- needs input: LinkedIn URL -->
+- LinkedIn: [linkedin.com/in/nkhanhpham](https://www.linkedin.com/in/nkhanhpham/)
 
 ## Credits and license
 
