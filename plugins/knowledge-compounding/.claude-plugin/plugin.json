@@ -1,0 +1,10 @@
+{
+  "name": "knowledge-compounding",
+  "version": "0.1.0",
+  "description": "A skill that turns explanations from your sessions into a cross-linked, diagrammed markdown knowledge base, captured by a background agent that never interrupts the answer.",
+  "author": {
+    "name": "Khanh Pham"
+  },
+  "license": "MIT",
+  "keywords": ["knowledge-base", "notes", "learning", "markdown", "skill", "product-management"]
+}

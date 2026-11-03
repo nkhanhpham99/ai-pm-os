@@ -49,6 +49,21 @@
         "status",
         "handoff"
       ]
+    },
+    {
+      "name": "knowledge-compounding",
+      "source": "./plugins/knowledge-compounding",
+      "description": "A skill that captures explanations from your sessions into a cross-linked, diagrammed markdown knowledge base via a background agent, with a read-back before it reports done.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Khanh Pham"
+      },
+      "license": "MIT",
+      "keywords": [
+        "knowledge-base",
+        "learning",
+        "notes"
+      ]
     }
   ]
 }
