@@ -1,6 +1,6 @@
 ---
 name: decision-ledger
-description: Use when the user wants to log a product decision, experiment, idea or hypothesis ("log a decision", "track this experiment", "add this idea to the ledger", "record this bet"), or wants to review the open ones ("review the decisions", "what is overdue", "answer the needs-input questions", "close this decision", "finalize this experiment"). Not for explaining a tradeoff (knowledge-base), writing a requirements doc (prd) or gathering outside evidence (market-research).
+description: Use when the user wants to log a product decision, experiment, idea or hypothesis ("log a decision", "track this experiment", "add this idea to the ledger", "record this bet"), or wants to review the open ones ("review the decisions", "which decisions are overdue", "answer the needs-input questions", "close this decision", "finalize this experiment"). Not for explaining a tradeoff (knowledge-base), writing a requirements doc (prd) or gathering outside evidence (market-research).
 license: MIT
 ---
 

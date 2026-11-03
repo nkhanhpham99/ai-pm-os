@@ -8,7 +8,7 @@
     {
       "name": "proof-before-done",
       "source": "./plugins/proof-before-done",
-      "description": "Hooks that block 'done' claims until an external write has been read back, plus a backtest and a self-correct skill.",
+      "description": "Hooks that ask once for a read-back before the agent may claim an external write (chat, docs, email, sheets) is done, plus a backtest and a self-correct skill.",
       "version": "0.1.0",
       "author": {
         "name": "Khanh Pham"
@@ -23,7 +23,7 @@
     {
       "name": "operating-rules",
       "source": "./plugins/operating-rules",
-      "description": "Opt-in SessionStart hook that injects a compact version of the eight operating rules into every session.",
+      "description": "Opt-in session rules: a compact version of the eight operating rules, injected at the start of every session.",
       "version": "0.1.0",
       "author": {
         "name": "Khanh Pham"
@@ -38,7 +38,7 @@
     {
       "name": "session-handoff",
       "source": "./plugins/session-handoff",
-      "description": "A skill that keeps one lean STATUS.md current so a cleared session resumes from a single file, with a read-back before the receipt.",
+      "description": "A skill that keeps one lean, always-current STATUS.md so you can /clear and the next session resumes by reading a single file.",
       "version": "0.1.0",
       "author": {
         "name": "Khanh Pham"
@@ -53,7 +53,7 @@
     {
       "name": "knowledge-compounding",
       "source": "./plugins/knowledge-compounding",
-      "description": "A skill that captures explanations from your sessions into a cross-linked, diagrammed markdown knowledge base via a background agent, with a read-back before it reports done.",
+      "description": "A skill that turns explanations from your sessions into a cross-linked, diagrammed markdown knowledge base, captured by a background agent that never interrupts the answer.",
       "version": "0.1.0",
       "author": {
         "name": "Khanh Pham"
@@ -68,7 +68,7 @@
     {
       "name": "product-workflows",
       "source": "./plugins/product-workflows",
-      "description": "Three skills: market-research (sourced, verified briefs), prd (grounded requirements with a clean shareable copy), and decision-ledger (log bets, review them, never invent an answer).",
+      "description": "Three skills for a product manager's core loop: evidence-first market research, a PRD with a clean shareable copy, and a decision ledger that logs bets and reviews them without inventing answers.",
       "version": "0.1.0",
       "author": {
         "name": "Khanh Pham"
@@ -83,7 +83,7 @@
     {
       "name": "pm-routines",
       "source": "./plugins/pm-routines",
-      "description": "Three routines that interview you first, run from an approved brief, and tune themselves: market-sweep, weekly-metrics-review and watch-until, plus scheduling recipes.",
+      "description": "Three scheduled routines that interview you before their first run, then tighten themselves over time: market-sweep (social, community and ad platforms), weekly-metrics-review (KR scoreboard plus an accountability audit) and watch-until (tell me once when X becomes true).",
       "version": "0.1.0",
       "author": {
         "name": "Khanh Pham"

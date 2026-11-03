@@ -10,9 +10,9 @@ Agents are confidently wrong, they forget between sessions, and they say "done" 
 
 Every claim you rely on belongs to one of three tiers. Answer from the highest tier that can answer, and never present a lower tier as a higher one.
 
-- **Canon (V1).** Technical or official facts, and anything deployed: infrastructure, schemas, paths, rules, shipped behaviour. Also any decision approved by the whole team. This is primary truth.
-- **Provisional (V2).** In-progress local knowledge: things being built but not yet shipped. Trust it only when Canon has no answer. It becomes Canon once it ships and you have checked it against the real source.
-- **Working (V3).** Ongoing decisions, experiments, plans, timelines, campaign work. This is not truth and it ages quickly. Retrieve it last. It becomes Canon only if the finding is technical or the team has approved it.
+- **Canon.** Technical or official facts, and anything deployed: infrastructure, schemas, paths, rules, shipped behaviour. Also any decision approved by the whole team. This is primary truth.
+- **Provisional.** In-progress local knowledge: things being built but not yet shipped. Trust it only when Canon has no answer. It becomes Canon once it ships and you have checked it against the real source.
+- **Working.** Ongoing decisions, experiments, plans, timelines, campaign work. This is not truth and it ages quickly. Retrieve it last. It becomes Canon only if the finding is technical or the team has approved it.
 
 Retrieve in order: Canon, then Provisional, then Working. Before assuming anything technical, check Canon. Do not guess.
 
@@ -42,13 +42,13 @@ When you find a wrong path, a bug, or an earlier finding that is no longer true:
 
 A correction from a teammate or a code-review finding counts as Canon. Update the record now rather than later. The `self-correct` skill does this sweep: it finds every copy of the stale claim and fixes all of them.
 
-*Why:* a fix applied to one copy leaves the others to contradict it later. See [lab 003](../lab/003-a-fix-that-checks-itself.md).
+*Why:* a fix applied to one copy leaves the others to contradict it later. See [lab 003](https://github.com/nkhanhpham99/ai-pm-os/blob/main/lab/003-a-fix-that-checks-itself.md).
 
 ## 4. Proof before done
 
 Never report something as done, sent, written, updated or deployed without checking that it landed. After any write to an external tool (a doc, a chat, a spreadsheet, a database, a deployed environment), re-read or re-fetch it. Then report the link and a one-line "what changed". For code, show the command you ran and its result: test output, build output, a screenshot. If you could not verify, say "not verified" and say why. Never imply success.
 
-*Why:* a write call that returns without an error only means it was accepted, not that the content is right. See [lab 002](../lab/002-does-my-agent-verify.md).
+*Why:* a write call that returns without an error only means it was accepted, not that the content is right. See [lab 002](https://github.com/nkhanhpham99/ai-pm-os/blob/main/lab/002-does-my-agent-verify.md).
 
 ## 5. Self-check before escalating
 
@@ -107,7 +107,6 @@ The skills in this marketplace open with a "Defaults" block. If your `CLAUDE.md`
 - knowledge-base folder: ~/knowledge/
 - status file: STATUS.md
 - teammate ask-doc name: <NAME>-ASKS.md
-- notes folder: <optional folder self-correct also sweeps>
 - research folder: ./research/
 - decisions file: ./decisions.md
 - PRD folder: ./docs/prd/
@@ -115,3 +114,5 @@ The skills in this marketplace open with a "Defaults" block. If your `CLAUDE.md`
 - metrics review folder: ./metrics-review/
 - watch-until folder: ./watch-until/
 ```
+
+Add `- notes folder: <path>` only if you keep a notes folder that self-correct should also sweep.

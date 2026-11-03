@@ -66,6 +66,8 @@ In Claude Code:
 
 Check the hooks loaded with `/hooks`. Install any other plugin the same way. From a local clone, use the clone's path in place of `nkhanhpham99/ai-pm-os`.
 
+The hooks need `python3` on PATH. Built and tested on macOS; Linux should work; Windows is untested.
+
 Then copy the operating rules. [`templates/CLAUDE.md`](templates/CLAUDE.md) has the eight rules, each with a one-line reason. Copy it into `~/.claude/CLAUDE.md` (every project) or a project's `CLAUDE.md`, and delete any rule you will not enforce. If you also want the compact version injected into every session, install `operating-rules`.
 
 No settings are required. The routines in `pm-routines` interview you once before their first run. To change where a skill writes, add an `## ai-pm-os settings` section to your `CLAUDE.md`. The keys are listed at the end of the template.

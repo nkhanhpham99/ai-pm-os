@@ -31,6 +31,7 @@ python3 scripts/check_skills.py
 python3 scripts/check_links.py
 bash scripts/privacy-lint.sh
 claude plugin validate . --strict
+for p in plugins/*; do claude plugin validate "$p" --strict; done
 ```
 
 ## Commits

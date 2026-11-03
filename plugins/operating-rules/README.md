@@ -32,6 +32,8 @@ If you would rather not use plugins, wire the same hook by hand: [`templates/set
 
 ## Edit the rules
 
+This edits your own copy: clone or fork the repo, make the change there, and install the plugin from that local path (`/plugin marketplace add <path>`). Edits inside an installed plugin's cache are lost on update.
+
 Change `hooks/rules.md`, then run the tests:
 
 ```

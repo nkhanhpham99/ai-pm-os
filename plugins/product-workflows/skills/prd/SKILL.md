@@ -89,10 +89,10 @@ Making the shareable copy:
 4. **Run the grep check on the shareable file. It must return nothing:**
 
 ```bash
-grep -nEi '/Use[r]s/|/hom[e]/|(^|[^[:alnum:]])~/|\$HOME|/private/|/Volumes/|/tmp/|\.claude/|[A-Za-z]:\\|\.jsonl|session[ _-]?(id|[0-9][0-9a-f]{5,}|[a-f][0-9][0-9a-f]{4,}|[a-f]{2}[0-9][0-9a-f]{3,}|[a-f]{3}[0-9][0-9a-f]{2,}|[a-f]{4}[0-9][0-9a-f]+|[a-f]{5,}[0-9])|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "<PRD folder>/<slug>.shareable.md"
+grep -nEi '/Use[r]s/|/hom[e]/|(^|[^[:alnum:]])~/|\$HOME|/private/|/Volumes/|/tmp/|/var/folders/|\.claude/|[A-Za-z]:\\|\.jsonl|session[ _-]?(id\b|[0-9][0-9a-f]{5,}|[a-f][0-9][0-9a-f]{4,}|[a-f]{2}[0-9][0-9a-f]{3,}|[a-f]{3}[0-9][0-9a-f]{2,}|[a-f]{4}[0-9][0-9a-f]+|[a-f]{5,}[0-9])|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "<PRD folder>/<slug>.shareable.md"
 ```
 
-   It catches local paths (including `~/` after punctuation, `$HOME`, `/private/`, `/Volumes/`, `/tmp/`, `.claude/`), transcript files, session ids (including short and hyphenated ones, which must contain a digit so that ordinary words such as "session feedback" do not fire) and raw UUIDs. Fix every hit and run it again until it prints nothing. Then read the file once for shorthand and private context a pattern cannot catch. If you cannot run the check, say "not verified: <reason>" and do not call the copy shareable.
+   It catches local paths (including `~/` after punctuation, `$HOME`, `/private/`, `/Volumes/`, `/tmp/`, `/var/folders/`, `.claude/`), transcript files, session ids (including short and hyphenated ones, which must contain a digit so that ordinary words such as "session feedback" do not fire) and raw UUIDs. Fix every hit and run it again until it prints nothing. Then read the file once for shorthand and private context a pattern cannot catch. If you cannot run the check, say "not verified: <reason>" and do not call the copy shareable.
 
 **Read each file back from disk** after writing and confirm the sections you wrote are present: the Status line, the metrics table with a reason for every target, the open questions, and the date. If a read-back does not match, fix it and read again. If you still cannot confirm, report "not verified: <reason>".
 

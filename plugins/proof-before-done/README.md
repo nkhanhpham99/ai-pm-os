@@ -30,6 +30,8 @@ From a local clone, use the clone's path in place of `nkhanhpham99/ai-pm-os`. Ch
 
 ## Extend the tool list
 
+This edits your own copy: clone or fork the repo, make the change there, and install the plugin from that local path (`/plugin marketplace add <path>`). Edits inside an installed plugin's cache are lost on update.
+
 Two places must agree:
 
 1. `hooks/hooks.json`: the PostToolUse `matcher` decides which tool calls invoke the hook. Add a word for your tool to the alternation.

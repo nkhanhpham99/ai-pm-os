@@ -58,8 +58,8 @@ Runs on your machine through `cron`, headless. `claude -p "<prompt>"` runs one n
 ```
 
 Notes:
-- **`timeout` is the outer hard limit.** On macOS it is not installed by default: install GNU coreutils and use `gtimeout`, or the run has no outer limit.
-- **Headless runs cannot answer permission prompts.** List the tools the routine needs in `--allowedTools`, and scope the shell to the commands the routine actually runs (`Bash(curl:*)` for a watch whose check is a `curl` call, `Bash(date:*)` for working out dates) rather than allowing plain `Bash`. Add `WebSearch,WebFetch` for `market-sweep`, and the MCP tools for your data sources and alert channel. Anything not allowed is refused, and the run reports it. Do not use a permission mode that skips checks.
+- **`timeout` is the outer hard limit.** On macOS it is not installed by default: install GNU coreutils and use `gtimeout`. Without it, the cron line fails with "command not found" and the routine never runs.
+- **Headless runs cannot answer permission prompts.** List the tools the routine needs in `--allowedTools`, and scope the shell to the commands the routine actually runs (`Bash(curl:*)` for a watch whose check is a `curl` call, `Bash(date:*)` for working out dates) rather than allowing plain `Bash`. Add `WebSearch,WebFetch` for `market-sweep`, and the MCP tools for your data sources and alert channel, including the tool that reads the alert or page back. Anything not allowed is refused, and the run reports it. Do not use a permission mode that skips checks.
 - `--max-budget-usd <amount>` caps what one run can spend.
 - The run uses your existing Claude Code login. If it expires, runs fail; check the log file.
 - On macOS, `cron` may need permission to read some folders. `launchd` is the native alternative with the same command.
@@ -114,4 +114,4 @@ still needs input or that the review date passed. Parse entries by label; treat 
 not a gap. End with the digest and a reminder to run "review the open decisions" in a normal session.
 ```
 
-Schedule it weekly, the day before the weekly metrics review if you run both, so the review copies in a fresh list.
+Schedule it weekly, the day before the weekly metrics review if you run both, so you can answer the open questions before the review copies the open decisions in.

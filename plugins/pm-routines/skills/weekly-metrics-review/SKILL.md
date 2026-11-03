@@ -1,6 +1,6 @@
 ---
 name: weekly-metrics-review
-description: Use when the user wants the weekly metrics or KR review compiled ("weekly metrics review", "compile the weekly scoreboard", "how did our KRs move last week", "weekly KPI update", "did we do last week's top 3", "what's red", "the week so far"), when a scheduled weekly-metrics-review run starts, when they want to set up or change the metrics brief (north star, KRs, sources, owners, targets, status-color rules), record that a metric definition or target was wrong, or tune the review. Not for a one-off deep dive into a single metric, outside market evidence (market-research), or logging a decision (decision-ledger).
+description: Use when the user wants the weekly metrics or KR review compiled ("weekly metrics review", "compile the weekly scoreboard", "how did our KRs move last week", "weekly KPI update", "did we do last week's top 3", "what's red in the metrics review", "the week so far"), when a scheduled weekly-metrics-review run starts, when they want to set up or change the metrics brief (north star, KRs, sources, owners, targets, status-color rules), record that a metric definition or target was wrong, or tune the review. Not for a one-off deep dive into a single metric, outside market evidence (market-research), or logging a decision (decision-ledger).
 license: MIT
 ---
 

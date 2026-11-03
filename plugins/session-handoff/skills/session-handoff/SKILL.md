@@ -8,8 +8,8 @@ license: MIT
 
 ## Defaults
 Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md before using these.
-- **Status file:** `STATUS.md` at the root of the project or work folder.
-- **Teammate ask-doc name:** `<NAME>-ASKS.md` at the same root, named for the person. Created only when needed (see below).
+- **Status file:** `STATUS.md` at the root of the project or work folder (setting name: `status file`).
+- **Teammate ask-doc name:** `<NAME>-ASKS.md` at the same root, named for the person (setting name: `teammate ask-doc name`). Created only when needed (see below).
 - **Date format:** `YYYY-MM-DD`. Use the date from the environment or conversation; if neither gives one, run `date +%F` or ask. Never guess.
 - If the settings rename the status file, treat every mention of STATUS.md below as that name.
 
@@ -26,7 +26,7 @@ The user asks for a handoff, a wrap-up, a status update, or to record where thin
 ## Workflow
 1. **Review the full conversation**, not just the last few turns.
 2. **Gather session state.** You already know it, so do not audit the filesystem or run broad searches. Collect what got done, what is in flight, what is queued, decisions made, open questions, teammate asks, and any deep-detail docs written. For live work, also collect background processes started with `run_in_background` (the shell IDs matter) and any dev server, URL, or artifact the work runs at.
-3. **Locate STATUS.md** at the root of the project or work folder. If none exists, create one using the structure below. If one exists, **merge into it**: match its headings, and do not restructure or overwrite it.
+3. **Locate STATUS.md** at the root of the project or work folder. If none exists and the user asked for a handoff, create one using the structure below. If none exists and you are invoking this proactively (nobody asked), do not create a file: offer it in one line ("Want me to start a STATUS.md here?") and continue. If one exists, **merge into it**: match its headings, and do not restructure or overwrite it.
 4. **Update it lean and side-by-side.** Move finished items into DONE as one-liners. Refresh CURRENT, NEXT, and CHECK / ASK. Keep Standing gotchas and Quick start accurate. Stamp "Last updated" with today's date. Use the date from the environment or conversation; if neither gives one, run `date +%F` or ask. Never guess. Edit the file directly, since it is the user's own status doc.
 5. **Route teammate asks to a separate doc, only when needed** (see below).
 6. **Read it back (required).** Re-read STATUS.md from disk after writing and confirm the sections you changed are actually there: the new "Last updated" date, the items you moved or added, and the deep-doc paths. If the file was not written or the read-back does not match, fix it and re-read. If you still cannot confirm it, say "not verified" in the receipt and say why. Never imply the file landed.

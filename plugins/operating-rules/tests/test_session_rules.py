@@ -39,6 +39,17 @@ class SessionRulesTest(unittest.TestCase):
         self.assertEqual(p.returncode, 0, p.stderr)
         self.assertEqual(p.stdout.strip(), "")
 
+    def test_blank_rules_prints_nothing(self):
+        for blank in ("", "   \n\t\n  \n"):
+            with tempfile.TemporaryDirectory() as d:
+                copy = os.path.join(d, "session_rules.py")
+                shutil.copy(HOOK, copy)
+                with open(os.path.join(d, "rules.md"), "w", encoding="utf-8") as f:
+                    f.write(blank)
+                p = run(copy)
+            self.assertEqual(p.returncode, 0, p.stderr)
+            self.assertEqual(p.stdout.strip(), "", repr(blank))
+
     def test_rules_under_250_words(self):
         with open(RULES, encoding="utf-8") as f:
             words = len(f.read().split())

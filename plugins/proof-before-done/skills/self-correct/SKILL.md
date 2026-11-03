@@ -9,7 +9,7 @@ license: MIT
 ## Defaults
 Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md before using these.
 - **Knowledge locations to sweep:** the project `CLAUDE.md`, `~/.claude/CLAUDE.md`, the Claude memory directory, `~/.claude/agents/`, `~/.claude/skills/`, and an optional notes folder if the settings name one (setting name: `notes folder`).
-- **Validity tiers:** V1 canon (deployed or team-approved fact), V2 provisional (in-progress local knowledge), V3 working (experiments, timelines). Definitions live in `templates/CLAUDE.md`. Latest wins within a tier.
+- **Validity tiers:** Canon (deployed or official fact, or a team-approved decision), Provisional (in-progress local knowledge), Working (experiments, plans, timelines). These are rule 1 of the ai-pm-os operating rules (https://github.com/nkhanhpham99/ai-pm-os/blob/main/templates/CLAUDE.md). If the user's CLAUDE.md names its tiers differently, use the user's names. Latest wins within a tier.
 
 ## 1. Pin the correction
 State the **wrong claim** (verbatim), the **correct claim**, and the **evidence** (source and date). If the correction is not clearly sourced, ask the user and stop. Never guess.
@@ -23,8 +23,8 @@ The failure mode is fixing one copy while stale twins survive. Before editing, s
 ## 4. Correct or supersede each copy
 In every file found: fix the claim, tag it `(tier, date)`, and keep the old claim under a short "Conflicts" note with the date. Never silently rewrite history. Check anything that depends on the fact.
 
-## 5. Flag wrong canon loudly
-If the wrong claim was V1 canon, tell the user explicitly, not just in a log line.
+## 5. Flag wrong Canon loudly
+If the wrong claim was Canon, tell the user explicitly, not just in a log line.
 
 ## 6. Note the systemic cause
 If the claim lived in more than one place, add one line on why it was missed.

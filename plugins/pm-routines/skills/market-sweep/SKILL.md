@@ -1,6 +1,6 @@
 ---
 name: market-sweep
-description: Use when the user wants a recurring sweep of social, community and ad platforms for what is rising in their space and what competitors are doing ("sweep trends", "what's trending on TikTok / Instagram / Reddit / YouTube", "what are competitors posting or advertising", "social listening", "find hooks", "why did that post work", "add this to the watchlist"), when a scheduled market-sweep run starts, when they want to set up or change the sweep's brief, rate a sweep's findings, record how an adopted hook or finding performed, or tune the sweep. Not for one-off evidence gathering or market sizing (market-research), writing requirements (prd) or logging a decision (decision-ledger).
+description: Use when the user wants a recurring sweep of social, community and ad platforms for what is rising in their space and what competitors are doing ("sweep trends", "what's trending on TikTok / Instagram / Reddit / YouTube", "what are competitors posting or advertising", "social listening", "find hooks", "why did that post work", "add this account or query to the sweep's watchlist"), when a scheduled market-sweep run starts, when they want to set up or change the sweep's brief, rate a sweep's findings, record how an adopted hook or finding performed, or tune the sweep. Not for one-off evidence gathering or market sizing (market-research), writing requirements (prd) or logging a decision (decision-ledger). A one-off "what is trending" question with no wish to repeat it is market-research.
 license: MIT
 ---
 

@@ -15,7 +15,7 @@ Orbit is a fictional scheduling API used for this evaluation.
 - notes folder: ./notes
 
 ## Facts
-- Orbit's public API allows 100 requests per minute per key. (V1, 2026-09-14)
+- Orbit's public API allows 100 requests per minute per key. (Canon, 2026-09-14)
 - Deploys go out on Tuesdays.
 EOF
 

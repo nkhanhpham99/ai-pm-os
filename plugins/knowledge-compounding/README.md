@@ -47,6 +47,8 @@ To change where entries are written, add an `## ai-pm-os settings` section to yo
 
 The default is `~/knowledge/`. The skill reads the setting before using the default.
 
+The default folder is outside your project, so Claude Code may ask before writing there, and a background capture that cannot ask reports "not verified". To allow it up front, add `Edit(~/knowledge/**)` and `Write(~/knowledge/**)` to `permissions.allow`, or choose a folder inside your project.
+
 ## Known tradeoff
 
 The trigger is deliberately narrow. Comparison and tradeoff questions ("X vs Y", "pros and cons", "which should I use") no longer auto-capture. They are captured only when you ask to save them, or ask for the tradeoff "with full context". The upside is fewer surprise background writes. The cost is that some comparisons worth keeping will be missed unless you ask.
