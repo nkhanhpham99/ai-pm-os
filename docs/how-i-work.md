@@ -21,7 +21,7 @@ Two lab entries changed how I think about this.
 - **[Lab 001](../lab/001-auditing-my-agent-setup.md)**, an audit of my own setup on 2026-11-02, found the rules strong and the enforcement thin. Only 1 of 4 hooks could block anything. 5 of 8 custom subagents had never been invoked. The permissions file had grown to 1,613 one-off entries.
 - **[Lab 002](../lab/002-does-my-agent-verify.md)** replayed my past sessions through a check for one rule: after writing to an external tool, read it back before saying "done". Of 3,731 turns, 538 wrote to an external tool. Only 45 of those (8%) read the result back. In 425, the agent claimed completion without a read-back.
 
-The rule had been in my instructions the whole time. It was followed in 8% of the turns it applied to. That is the number that reorganised this repo.
+The rule had been in my instructions the whole time. It was followed in 8% of the turns it applied to. That is the number that reorganized this repo.
 
 ## Principles
 

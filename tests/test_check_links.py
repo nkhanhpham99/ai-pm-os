@@ -59,6 +59,22 @@ class CheckLinksTest(unittest.TestCase):
         self.assertIn("docs/missing.md", out)
         self.assertNotIn("docs/guide.md", out)
 
+    def test_linked_image_target_is_checked(self):
+        write(self.root, "README.md", "[![b](https://x/y.svg)](missing.md)\n")
+        self.track()
+        rc, out = run_checker(self.root)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("missing.md", out)
+
+    def test_filename_with_space_is_scanned(self):
+        write(self.root, "my notes.md", "[gone](nowhere.md)\n")
+        write(self.root, "README.md", "[notes](my%20notes.md)\n")
+        self.track()
+        rc, out = run_checker(self.root)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("my notes.md: nowhere.md", out)
+        self.assertNotIn("my%20notes.md", out)
+
     def test_untracked_markdown_is_not_scanned(self):
         write(self.root, "README.md", "fine\n")
         self.track()

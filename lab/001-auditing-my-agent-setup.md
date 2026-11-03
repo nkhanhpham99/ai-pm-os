@@ -14,7 +14,7 @@
   | Custom subagents never invoked | 5 of 8 | transcript scan, 2026-11-02 |
   | Permissions file size | 1,613 one-off entries | file review, 2026-11-02 |
 
-  The rules were clear and specific. Almost nothing checked whether they were followed. Three of the four hooks could only print a message. The permissions file had grown one approval at a time until it was too long to review.
+  The rules were clear and specific. Almost nothing checked whether they were followed. The other three hooks could not stop anything. The permissions file had grown one approval at a time until it was too long to review.
 
 - **Decision:** Iterate.
   - **Rebuilt the permissions file** as 224 entries, with an ask-first list for risky actions. [`templates/settings.example.json`](../templates/settings.example.json) shows the shape of an ask-first list.

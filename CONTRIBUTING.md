@@ -12,7 +12,7 @@ Thanks for looking. This repo is one person's working setup, kept in public, so 
 
 - **No invented numbers.** Any number in a README, skill or lab entry needs a source: a command anyone can re-run, or a named, dated measurement. If you cannot source it, leave the number out.
 - **Product-anonymous and private-free.** No personal paths, email addresses, internal IDs, chat links or company names. The privacy lint checks for the generic patterns.
-- **Portable skills.** `SKILL.md` frontmatter uses only `name`, `description`, `license`, `compatibility`, `metadata` and `allowed-tools`. `name` matches the folder. `description` starts with "Use when", lists triggers rather than the workflow, and stays under 1,536 characters.
+- **Portable skills.** `SKILL.md` frontmatter uses only `name`, `description`, `license`, `compatibility`, `metadata` and `allowed-tools`. `name` matches the folder. `description` starts with "Use when", lists triggers rather than the workflow, and is at most 1,536 characters.
 - **Hooks fail open.** On any error or unexpected input, a hook exits 0 with no output. Reference plugin files through `${CLAUDE_PLUGIN_ROOT}` and run Python with `python3 -I`.
 - **Markdown is the tested backend.** Other backends go in a `references/` file marked untested.
 - **A bug fix ships with a regression test** that fails before the fix and passes after.

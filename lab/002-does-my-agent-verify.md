@@ -8,7 +8,7 @@
   - The first version of the hook shipped with 10 regression tests. The packaged plugin now has 23: 15 for the hook and 8 for the backtest, in [`tests/`](../plugins/proof-before-done/tests/).
 - **Measure:** A backtest over my own past session transcripts. For every turn (one user prompt up to the next), it counts:
   - **write turns:** turns that called a tool which writes to an external surface (a doc, a chat message, an email draft, a spreadsheet);
-  - **read back:** write turns that called a matching read tool after the last write;
+  - **read back:** write turns that called a tool from the hook's read-back list after the last write;
   - **would block:** write turns with no read-back whose final message claims completion ("done", "sent", "published" and similar) without saying "not verified".
 
   Re-run it on your own transcripts:
@@ -28,7 +28,7 @@
   | Of those, read it back after the last write | 45 (8%) |
   | Claimed completion with no read-back | 425 |
 
-  Source: the backtest above, run 2026-11-02 with the pre-packaging version of the script, which uses the same counting rule. The rule was written down the whole time. It was followed in 8% of the turns it applied to.
+  Source: the backtest above, run 2026-11-02 with the pre-packaging version of the script, which uses the same counting rule. Its tool lists may differ slightly from the packaged version. The rule was written down the whole time. It was followed in 8% of the turns it applied to.
 
   Caveat: "claims completion" is a word match, so `would block` is an estimate of the check, not a verdict on any single turn.
 

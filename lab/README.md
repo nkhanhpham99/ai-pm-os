@@ -1,6 +1,6 @@
 # The lab
 
-This folder is a notebook of dated experiments on my own AI agent setup. Each entry starts with a hypothesis, makes one change, measures it, and records what I decided. The plugins in this repo exist because an entry here showed a problem worth fixing.
+This folder is a notebook of dated experiments on my own AI agent setup. Each entry starts with a hypothesis, makes one change, measures it, and records what I decided. Some plugins in this repo exist because an entry here showed a problem worth fixing. The rest carry no impact claim until an entry measures one.
 
 Rules for every entry:
 
@@ -13,7 +13,7 @@ Rules for every entry:
 
 | # | Entry | Status |
 |---|---|---|
-| 001 | [Auditing my own agent setup](001-auditing-my-agent-setup.md) | Done. Led to 002 and 004. |
+| 001 | [Auditing my own agent setup](001-auditing-my-agent-setup.md) | Done. Baseline for 002. |
 | 002 | [Does my agent actually verify before saying "done"?](002-does-my-agent-verify.md) | Hook shipped. Follow-up measurement pending. |
 | 003 | [A fix that checks itself](003-a-fix-that-checks-itself.md) | Kept. |
 | 004 | [Guardrails that match on text misfire](004-guardrails-that-match-text-misfire.md) | Open. Fix not built. |

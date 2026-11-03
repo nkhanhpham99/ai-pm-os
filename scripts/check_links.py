@@ -12,14 +12,15 @@ import subprocess
 import sys
 from urllib.parse import unquote
 
-LINK = re.compile(r"!?\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+\"[^\"]*\")?\s*\)")
+LINK = re.compile(r"\]\(\s*<?([^)\s>]+)>?(?:\s+\"[^\"]*\")?\s*\)")
 FENCE = re.compile(r"^\s{0,3}(`{3,}|~{3,}).*?^\s{0,3}\1\s*$", re.M | re.S)
 CODE = re.compile(r"`[^`\n]*`")
 
 
 def main(argv):
     root = os.path.abspath(argv[1] if len(argv) > 1 else ".")
-    files = subprocess.run(["git", "-C", root, "ls-files", "*.md"], capture_output=True, text=True, check=True).stdout.split()
+    out = subprocess.run(["git", "-C", root, "ls-files", "-z", "*.md"], capture_output=True, text=True, check=True).stdout
+    files = [f for f in out.split("\0") if f]
     broken = []
     for rel in files:
         with open(os.path.join(root, rel), encoding="utf-8", errors="replace") as fh:
