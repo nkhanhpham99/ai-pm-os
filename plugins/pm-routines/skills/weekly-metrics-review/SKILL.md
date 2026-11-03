@@ -1,6 +1,6 @@
 ---
 name: weekly-metrics-review
-description: Use when the user wants the weekly metrics or KR review compiled ("weekly metrics review", "compile this week's scoreboard", "how did our KRs move this week", "weekly KPI update", "did we do last week's top 3", "what's red this week"), when a scheduled weekly-metrics-review run starts, when they want to set up or change the metrics brief (north star, KRs, sources, owners, targets, status-color rules), record that a metric definition or target was wrong, or tune the review. Not for a one-off deep dive into a single metric, outside market evidence (market-research), or logging a decision (decision-ledger).
+description: Use when the user wants the weekly metrics or KR review compiled ("weekly metrics review", "compile the weekly scoreboard", "how did our KRs move last week", "weekly KPI update", "did we do last week's top 3", "what's red", "the week so far"), when a scheduled weekly-metrics-review run starts, when they want to set up or change the metrics brief (north star, KRs, sources, owners, targets, status-color rules), record that a metric definition or target was wrong, or tune the review. Not for a one-off deep dive into a single metric, outside market evidence (market-research), or logging a decision (decision-ledger).
 license: MIT
 ---
 
@@ -12,7 +12,7 @@ This is a routine, not a one-shot prompt. It interviews the user first, runs fro
 
 ## When to use
 
-- **A weekly run**: by hand ("compile this week's review") or from a schedule (see `SCHEDULING.md` at the plugin root).
+- **A weekly run**: by hand ("compile the weekly review", which reviews the week just ended) or from a schedule (see `SCHEDULING.md` at the plugin root).
 - **Setting up or changing the brief**: first use, a new KR, a changed query, a new owner.
 - **Recording a correction** with `learn`: "that query double-counts", "the target moved".
 - **Tuning**: "tune the metrics review", or automatically every N runs.
@@ -26,7 +26,7 @@ Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md be
 - **Decisions file:** `./decisions.md` (setting name: `decisions file`, shared with the decision-ledger skill). **Precedence:** the `Decisions file` field in `METRICS.md` wins when it is filled, because it is the approved path a scheduled run sees; at setup that field defaults to the `decisions file` setting, else `./decisions.md`. Read only, never written by this routine. If it does not exist, the review says so and carries on.
 - **Templates:** [METRICS](assets/METRICS.template.md) for the brief, [the week template](assets/week-template.md) for each week's file.
 - **Dates:** `YYYY-MM-DD`. Use the date from the environment or conversation; if neither gives one, run `date +%F`. Never guess.
-- **Review week:** the ISO week (`YYYY-Www`, Monday to Sunday) the review covers. It is always the ISO week just ended: on the brief's run day (default Monday) and on any other day, the week before the current one. Get it with `date -v-7d +%G-W%V` (macOS) or `date -d '7 days ago' +%G-W%V` (GNU). The week file is named after the review week. **Last week** means the review week minus one (`date -v-14d +%G-W%V` or `date -d '14 days ago' +%G-W%V`). If the user explicitly asks mid-week for the week still in progress, write it as `YYYY-Www-partial.md` for the current week; a partial file never counts as that week's review, so the scheduled run still writes the full one.
+- **Review week:** the ISO week (`YYYY-Www`, Monday to Sunday) the review covers. It is always the ISO week just ended: on the brief's run day (default Monday) and on any other day, the week before the current one. Get it with `date -v-7d +%G-W%V` (macOS) or `date -d '7 days ago' +%G-W%V` (GNU). The week file is named after the review week. **Last week** means the review week minus one (`date -v-14d +%G-W%V` or `date -d '14 days ago' +%G-W%V`). So "this week's review" always means the review week. Only an explicit request for the week in progress ("the week so far", "a partial review") covers the current week: then write it as `YYYY-Www-partial.md` for the current week; a partial file never counts as that week's review, so the scheduled run still writes the full one.
 - **Tune cadence:** every 4 runs, or on request. The brief's `Tune every` field overrides it.
 - **Storage:** markdown. If the brief's destination is Notion, read [using Notion](references/using-notion.md) (untested); the markdown week file is still written first.
 
@@ -59,7 +59,7 @@ Run this before every `run` and `tune`. Do not run degraded.
 1. **If the brief file is missing → `setup`.** No `METRICS.md` in the data folder means the interview has not happened.
 2. **If `Status` is not `approved`** → show the draft and ask for approval. Stop.
 3. **If any field marked REQUIRED in the brief is empty, or `review_by` has passed** → ask about that field and stop. Empty means blank, an unfilled `<placeholder>`, or `needs input`. Name every empty field. The number of KRs must sit inside the brief's `KR range` (an adjustable default of 3 to 6); outside it, ask. A metric that cannot be *read* this week is not an empty field; that is handled in the run as "awaiting". **Exception:** an interactive `tune` is not blocked by a passed `review_by`; it runs, and the new date becomes its last question.
-4. **If the review week's file already exists**, this run would duplicate that review week. Interactive: show the existing file and ask whether to update it or stop. Unattended: append a `not ready (duplicate of <review week>)` row and stop. Never overwrite a week silently.
+4. **`run` only (not `tune`): if the review week's file already exists**, this run would duplicate that review week. Interactive: show the existing file and ask whether to update it or stop. Unattended: append a `not ready (duplicate of <review week>)` row and stop. Never overwrite a week silently.
 
 When nobody is there to answer (a scheduled run), "ask" means: put the question at the top of the honest summary, append a `not ready` row to `RUN-LOG.md`, and stop.
 

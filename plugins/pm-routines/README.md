@@ -41,7 +41,7 @@ From a local clone, use the clone's path in place of `nkhanhpham99/ai-pm-os`.
 ## Use it
 
 - Market sweep: "set up a market sweep", "sweep trends", "what are competitors posting", "rate the last sweep", "tune the sweep".
-- Metrics review: "set up the weekly metrics review", "compile this week's review", "that metric's query was wrong", "tune the metrics review".
+- Metrics review: "set up the weekly metrics review", "compile the weekly review" (it covers the ISO week just ended; ask for "the week so far" for a partial review of the week in progress), "that metric's query was wrong", "tune the metrics review".
 - Watch: "tell me when version 2 is live in the store", "let me know once the fix shows up in production", "that alert was noise".
 
 Then schedule it with a recipe from [`SCHEDULING.md`](SCHEDULING.md). Run `setup` by hand first: a schedule cannot answer interview questions.
@@ -56,7 +56,7 @@ To change where files go, add an `## ai-pm-os settings` section to your CLAUDE.m
 - decisions file: ./decisions.md
 ```
 
-The defaults are the values shown. Each skill reads the setting before using its default. `decisions file` is the same setting the `decision-ledger` skill uses.
+The defaults are the values shown. Each skill reads the setting before using its default. `decisions file` is the same setting the `decision-ledger` skill uses. For `weekly-metrics-review`, the `Decisions file` field in its `METRICS.md` brief takes precedence over this setting when it is filled (setup fills it from the setting).
 
 ## Storage
 

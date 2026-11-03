@@ -36,11 +36,13 @@ Pick the mode from the request. If the brief is missing, the mode is `setup` wha
 ### `setup`: interview, test the check, approved brief
 Ask **one question at a time**, each with a recommended default, in the order of the brief's REQUIRED fields:
 1. **Condition**, in plain words. "What should become true?" Default: the user's own sentence, restated.
-2. **Read-only check.** "How can I tell, without changing anything?" Propose one: an HTTP GET to a public endpoint, a CLI command that only reads, or an analytics query. Prefer the cheapest check that answers the question. Default: the one you propose after a quick look at what is reachable.
+2. **Read-only check.** "How can I tell, without changing anything?" Propose one: an HTTP GET to a public endpoint, a CLI command that only reads, or an analytics query. A check may be a few read-only commands (for example a certificate's dates, then the site's status), each written with its own timeout. Prefer the cheapest check that answers the question. Default: the one you propose after a quick look at what is reachable.
 3. **True when.** "What exact output counts as yes?" Make it mechanical: a field value, a status code, a row count, a threshold. Also ask what counts as **unclear** (too little data, an empty response). Default: drafted from the check's actual output.
 4. **Alert channel.** Push notification, a chat message to a named channel, or an email **draft** (never sent). Default: whichever notification tool this session has; ask if none. Then draft the alert message and get it approved.
 5. **Expiry date.** "After what date should I give up and tell you?" Default: one month from today.
 6. **Marker path.** Default: `./watch-until/<watch-slug>/ALERTED`, written as an absolute path.
+
+Then one optional question, skippable: **If it expires**: "If this never becomes true, what should you check, or ask someone to check?" Default: none. It goes into the expiry notice.
 
 Then:
 - **Prove the check is read-only.** It must not write, post, deploy, delete or change state anywhere: HTTP GET or HEAD only, SQL `SELECT` only, CLI subcommands that only read. Refuse anything else and propose a read-only alternative.
@@ -76,21 +78,22 @@ When nobody is there to answer (a scheduled run), "ask" means: put the question 
 
 The whole run must finish inside the time limit. Keep it to the steps below.
 
-1. **Read `WATCH.md`.** Only that file and the `RUN-LOG.md` rows since the last `tune` row (for step 7). Each run starts fresh; everything it needs is in the brief.
-2. **Perform the check** exactly as written in the brief. Do not improvise a different check. A check may be a few read-only commands (for example a certificate's dates, then the site's status); run each one as written. Every shell call carries a timeout (see Guardrails). If the call hangs, errors or times out, retry **once**. If it fails again, record `error`, write "could not check today: <reason>" in the summary, and stop. An error never alerts.
+1. **Read `WATCH.md`**, the `RUN-LOG.md` rows since the last `tune` row, and any `LEARNINGS.md` entry marked `proposed, awaiting approval` (both for step 7). Nothing else. Each run starts fresh; everything it needs is in the brief.
+2. **Perform the check** exactly as written in the brief. Do not improvise a different check. A check may be a few read-only commands (for example a certificate's dates, then the site's status); run each one as written. Every shell call carries a timeout (see Guardrails). If the call hangs, errors or times out, retry **once**. If it fails again, the result is `error`: write "could not check today: <reason>" in the summary and go to step 6. An error never alerts.
 3. **Evaluate "true when"** against the raw output, literally. The result is one of:
    - `true`: the output meets the brief's "true when".
    - `false`: it does not.
    - `unclear`: the output meets the brief's "unclear when", or cannot be parsed. Unclear never alerts.
-4. **If `false` or `unclear`**: append a `RUN-LOG.md` row and stop. The summary is one line with what was observed.
+4. **If `false` or `unclear`**: no alert. The summary is one line with what was observed. Go to step 6.
 5. **If `true`**:
    1. **Alert once** through the brief's channel, with the approved message. Fill its blanks only with values actually observed in this run's output.
    2. **Verify the alert landed** where the channel allows: read the chat message back, or fetch the email draft. A push notification cannot be read back: say "sent, not verified: push notifications cannot be read back".
-   3. **Write the marker file** with the date, the observed value and the alert channel. If the alert call failed, do **not** write the marker; say "alert failed: <reason>; the next run will try again".
+   3. **Write the marker file** with the date, the observed value and the alert channel. If the alert call failed, do **not** write the marker; say "alert failed: <reason>; the next run will try again", and skip to sub-step 6 (the watch is not retired).
    4. **Read the marker back** from disk.
    5. **Retire**: tell the user the watch is done and how to delete or disable its scheduled task (see `SCHEDULING.md`). Never delete or edit the schedule yourself.
-6. **Append one row to `RUN-LOG.md`** and read it back.
-7. **Count runs since the last tune** (rows after the last `tune` row, or all rows). If it reaches 4 and the watch is still live: interactive, run `tune`; unattended, add a one-line tune proposal to the summary, unless one is already `proposed, awaiting approval`.
+   6. Append the `true` row to `RUN-LOG.md` (noting `alert failed` if it did), read it back, and stop. The true path never counts toward a tune.
+6. **Every live outcome (`false`, `unclear`, `error`) ends here.** Append one row to `RUN-LOG.md` with the result and read it back.
+7. **Count runs since the last tune** (rows after the last `tune` row, or all rows), then stop. If the count reaches 4: interactive, run `tune`; unattended, add a one-line tune proposal to the summary, unless one is already `proposed, awaiting approval`.
 
 ### RUN-LOG.md, LEARNINGS.md and marker formats
 `RUN-LOG.md` is a table, newest at the bottom: `| Date | Result | Observed | Duration | Notes |`. Result is `true`, `false`, `unclear`, `error`, `not ready`, `already alerted`, `expired` or `tune`. Observed is a short excerpt of the raw output, never a paraphrase.

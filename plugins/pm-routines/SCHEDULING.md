@@ -84,7 +84,7 @@ Read back every file you write before the summary. End with the honest summary.
 
 ```text
 Use the weekly-metrics-review skill in run mode for the review week (the ISO week just ended).
-The data folder is <absolute path>/metrics-review/ and the decisions file is <absolute path>/decisions.md.
+The data folder is <absolute path>/metrics-review/. Read open decisions from the file named in METRICS.md's Decisions file field (or, if that is blank, the decisions file setting).
 This is an unattended scheduled run: nobody can answer questions. Wherever the skill says to ask,
 put the question at the top of your summary. Leave next week's top 3 as needs input with labelled suggestions.
 Never estimate an unreadable metric: mark it awaiting its owner or source.
@@ -106,7 +106,7 @@ Alert at most once, using the marker file. Never delete or edit this schedule; t
 The `decision-ledger` skill's review mode asks you questions one at a time, which a scheduled run cannot do. So the scheduled version only builds the digest; you answer it later by saying "review the open decisions" in a normal session.
 
 ```text
-Use the decision-ledger skill to prepare a weekly review digest of <absolute path>/decisions.md.
+Use the decision-ledger skill to prepare a weekly review digest of the decisions file (<absolute path from your decisions file setting>).
 This is an unattended scheduled run: nobody can answer questions, so do not write anything into the decisions file.
 List every entry that needs attention: Status open or needs input, or a real Review by date before today
 with Status not closed or superseded. For each give the id, title, owner, and exactly which fields are
