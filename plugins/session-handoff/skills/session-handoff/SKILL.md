@@ -1,6 +1,6 @@
 ---
 name: session-handoff
-description: Use when the user says "session handoff", "wrap up session", "hand off", "update STATUS", "record where we are", or "summarize before I clear", or is about to /clear or end a long session. Also use proactively at a milestone, a new pending item, or a new open question. Applies to any kind of work, such as a build, brainstorm, prototype, campaign, research, schedule, tracking, or summary.
+description: Use when the user says "wrap up", "write a handoff", "session handoff", "update STATUS.md", "record where we are", or "save progress before I clear context", or is about to /clear, compact, or end a long session. Also use proactively at a milestone, a new pending item, or a new open question. Applies to any kind of work (build, brainstorm, prototype, campaign, research, schedule, tracking, summary).
 license: MIT
 ---
 
@@ -10,7 +10,8 @@ license: MIT
 Read overrides from an `## ai-pm-os settings` section in the user's CLAUDE.md before using these.
 - **Status file:** `STATUS.md` at the root of the project or work folder.
 - **Teammate ask-doc name:** `<NAME>-ASKS.md` at the same root, named for the person. Created only when needed (see below).
-- **Date format:** `YYYY-MM-DD`, taken from the conversation context.
+- **Date format:** `YYYY-MM-DD`. Use the date from the environment or conversation; if neither gives one, run `date +%F` or ask. Never guess.
+- If the settings rename the status file, treat every mention of STATUS.md below as that name.
 
 ## What this does
 Keep a lean, always-current STATUS.md for whatever the user is working on, so they can `/clear` and the next agent resumes by reading that one file. It applies to every kind of work: building, brainstorming, prototyping, running a campaign, research, scheduling, tracking. It is not just for code.
@@ -26,7 +27,7 @@ The user asks for a handoff, a wrap-up, a status update, or to record where thin
 1. **Review the full conversation**, not just the last few turns.
 2. **Gather session state.** You already know it, so do not audit the filesystem or run broad searches. Collect what got done, what is in flight, what is queued, decisions made, open questions, teammate asks, and any deep-detail docs written. For live work, also collect background processes started with `run_in_background` (the shell IDs matter) and any dev server, URL, or artifact the work runs at.
 3. **Locate STATUS.md** at the root of the project or work folder. If none exists, create one using the structure below. If one exists, **merge into it**: match its headings, and do not restructure or overwrite it.
-4. **Update it lean and side-by-side.** Move finished items into DONE as one-liners. Refresh CURRENT, NEXT, and CHECK / ASK. Keep Standing gotchas and Quick start accurate. Stamp "Last updated" with today's date from context, never a guessed one. Edit the file directly, since it is the user's own status doc.
+4. **Update it lean and side-by-side.** Move finished items into DONE as one-liners. Refresh CURRENT, NEXT, and CHECK / ASK. Keep Standing gotchas and Quick start accurate. Stamp "Last updated" with today's date. Use the date from the environment or conversation; if neither gives one, run `date +%F` or ask. Never guess. Edit the file directly, since it is the user's own status doc.
 5. **Route teammate asks to a separate doc, only when needed** (see below).
 6. **Read it back (required).** Re-read STATUS.md from disk after writing and confirm the sections you changed are actually there: the new "Last updated" date, the items you moved or added, and the deep-doc paths. If the file was not written or the read-back does not match, fix it and re-read. If you still cannot confirm it, say "not verified" in the receipt and say why. Never imply the file landed.
 7. **Give a short chat receipt and a copy-paste primer**, not the full handoff (see below).
@@ -109,7 +110,7 @@ The primer must name the **absolute STATUS.md path** and tell the agent to read 
 10. **Never invent state.** For an empty section, write "none" and do not omit it.
 11. **Absolute paths always** inside STATUS.md, never `~` or relative paths.
 12. **Background and live state is load-bearing.** Background shell IDs plus the kill command, dev ports, and live URLs go in Quick start, or the next agent cannot find them.
-13. **Do not write to the user's memory or knowledge base from this skill.** Recording milestones elsewhere is a separate habit. STATUS.md is the artifact here.
+13. **Stay in scope.** This skill writes only STATUS.md (and an ask-doc when needed); it does not touch other notes or memory unless the user asks.
 
 ## Anti-patterns
 - Dumping the full board into chat alongside the file.
@@ -118,5 +119,5 @@ The primer must name the **absolute STATUS.md path** and tell the agent to read 
 - Creating a teammate ASKS file for solo work, or a second STATUS.md when one exists.
 - Leaving CURRENT or Quick start vague. They are what the next session reads first.
 - Relative paths or `~` inside STATUS.md.
-- Making up the "Last updated" date. Use the date from context.
+- Making up the "Last updated" date. Use the date from the environment or conversation, or `date +%F`.
 - Reporting "updated" without having re-read the file.

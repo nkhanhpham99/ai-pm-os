@@ -35,6 +35,6 @@ From a local clone, use the clone's path in place of `nkhanhpham99/ai-pm-os`.
 
 ## Use it
 
-Say "session handoff", "wrap up session", "update STATUS", or "record where we are". The skill also applies when you are about to `/clear`, and it should be used at milestones during a session rather than only at the end.
+Say "wrap up", "write a handoff", "session handoff", "update STATUS.md", or "record where we are". The skill also applies when you are about to `/clear` or compact, and it should be used at milestones during a session rather than only at the end.
 
 To change the defaults (the status file name or the ask-doc name), add an `## ai-pm-os settings` section to your CLAUDE.md. The skill reads it before using its own defaults.
