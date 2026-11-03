@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - unreleased
+## [0.1.0] - 2026-11-03
 
 ### Added
 
@@ -20,3 +20,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rewrite-in-place, compaction and premise-check rules across `self-correct`, `session-handoff`, `decision-ledger` and the operating rules: a fix rewrites the old line instead of adding one beside it, closed items shrink to one line while open ones keep their history, and a line in an old doc is checked against the real source before it is carried forward.
 - Eval case `self-correct-three-copies`.
 - README, lab notebook with entries 001 to 006, `docs/how-i-work.md`, contributing guide and issue templates.
+
+[0.1.0]: https://github.com/nkhanhpham99/ai-pm-os/releases/tag/v0.1.0
