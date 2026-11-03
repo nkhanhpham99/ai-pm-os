@@ -1,0 +1,52 @@
+{
+  "_comment": "Example only. Merge what you want into ~/.claude/settings.json (or a project's .claude/settings.json). 'ask' makes Claude Code stop and confirm before running a matching command. Replace ~/path/to/ai-pm-os with where you cloned the repo. If you installed the plugins with /plugin install, you do not need the hooks block.",
+  "permissions": {
+    "ask": [
+      "Bash(git push*)",
+      "Bash(gh pr merge*)",
+      "Bash(gh release create*)",
+      "Bash(gh secret *)",
+      "Bash(rm -rf *)",
+      "Bash(kubectl delete *)",
+      "Bash(kubectl apply *)",
+      "Bash(terraform apply*)",
+      "Bash(npm publish*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "mcp__.*(notion|slack|send_message|draft|reply|forward|update_doc|create_file|update_file|values|spreadsheet).*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I ~/path/to/ai-pm-os/plugins/proof-before-done/hooks/proof_before_done.py post",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I ~/path/to/ai-pm-os/plugins/proof-before-done/hooks/proof_before_done.py stop",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I ~/path/to/ai-pm-os/plugins/operating-rules/hooks/session_rules.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

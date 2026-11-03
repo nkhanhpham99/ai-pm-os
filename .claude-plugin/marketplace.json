@@ -19,6 +19,21 @@
         "hooks",
         "self-correct"
       ]
+    },
+    {
+      "name": "operating-rules",
+      "source": "./plugins/operating-rules",
+      "description": "Opt-in SessionStart hook that injects a compact version of the eight operating rules into every session.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Khanh Pham"
+      },
+      "license": "MIT",
+      "keywords": [
+        "operating-rules",
+        "claude-md",
+        "hooks"
+      ]
     }
   ]
 }

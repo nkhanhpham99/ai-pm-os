@@ -1,0 +1,10 @@
+{
+  "name": "operating-rules",
+  "version": "0.1.0",
+  "description": "Opt-in session rules: a compact version of the eight operating rules, injected at the start of every session.",
+  "author": {
+    "name": "Khanh Pham"
+  },
+  "license": "MIT",
+  "keywords": ["operating-rules", "claude-md", "hooks", "product-management"]
+}
